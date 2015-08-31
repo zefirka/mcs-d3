@@ -1,0 +1,11 @@
+{
+  "name": "mcs-d3-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate for Moscow Coding School D3JS Course",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Trdat Mkrtchyan",
+  "license": "MIT"
+}
