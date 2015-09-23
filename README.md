@@ -1,8 +1,10 @@
-#nadmozg
+#mcs-d3-boilerplate
 
-## Make targets
-  - `run` - runs a server (if you have supervisor then it runs with node-supervisor)
-  - `build` - builds package for first time
-  - `static` - builds static files (js/css)
-  - `docs` - build documentation
-  - `test` - runs auto-testing server
+###Quick start###
+```
+git clone https://github.com/zefirka/mcs-d3-boilerplate.git d3
+cd d3
+npm install
+npm start
+```
+
