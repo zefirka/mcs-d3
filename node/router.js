@@ -72,7 +72,7 @@ function router(app) {
     next();
   });
 
-  app.get('/day/:day/:lesson/*.(css|png)', function(req, res, next){
+  app.get('/day/:day/:lesson/*.(css|png|js|jpg|gif|webm)', function(req, res, next){
     var file = req.url.split('/').pop();
     var day = req.params.day;
     var url = join(config.views, 'days', day, 'lessons', file);
