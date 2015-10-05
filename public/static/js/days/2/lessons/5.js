@@ -1,32 +1,29 @@
-// var bigData = [10, 30, 20, 50, 26];
+var h1 = document.getElementById('header');
+var ul = document.querySelector('.nav');
 
-// var container = $('.container');
+var lis = document.querySelectorAll('.nav li');
 
-// // naive
+function randomHue(){
+	return ((Math.random() * 257) >> 0).toString(16);
+}
 
-// function naive(item){
-// 	var $bar = $('<div class="bar"></div>');
-// 	$bar.css('width', item);
-// 	container.append($bar);
-// }
+function randomColor(){
+	var R = randomHue(),
+		G = randomHue(),
+		B = randomHue();
 
+	return '#' + R + G + B;
+}
 
+function randomSize(from, to){
+	to = to || from;
+	from = from || 1;
+	return from + (Math.random() * to >> 0);
+}
 
-// function complex(item){
-// 	function scale(from, to, min, max, ck){
-// 		return function(value){
-// 			return ((to - from) / (max - min + ck)) * value;
-// 		}
-// 	}
-
-// 	var width = scale(0, container.width(), 10, 50, 27.5)
-
-// 	return naive(width(item));
-// }
-
-// bigData.forEach(complex);
-
-// $(window).resize(function(){
-// 	container.html('');
-// 	bigData.forEach(complex);
-// })
+[].forEach.call(lis, function (li) {
+	li.addEventListener('click', function(event){
+		this.style.color = randomColor();
+		this.style.fontSize = randomSize(10, 26) + 'px';
+	});
+});

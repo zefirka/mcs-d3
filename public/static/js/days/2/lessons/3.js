@@ -1,10 +1,10 @@
-var cns = document.getElementById('console');
+var execptions = [
+	'будет',
+	'будете',
+	'который',
+	'чтобы',
+	'которые',
+	'которым',
+];
 
-function code(){
-	var argv = [].slice.call(arguments);
-
-	if(cns){
-		cns.innerHTML = argv.map(JSON.stringify);
-	}
-
-}
+var words = theStory.replace(/[\.,\?\!\;\:\-«»\"\'\)\(]/g, ' ').split(/\s/);
