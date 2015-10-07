@@ -18,13 +18,13 @@ function interpolate(html, day, lesson){
   }
 
   if(day && !lesson){
-    btn = '<div><a href="/day/' + day +'/1/">Приступим</a></div>';
+    btn = '<div class="navigator"><a href="/day/' + day +'/1/">Приступим</a></div>';
   }else{
     if(lesson > 1){
-      btn = '<div><a href="/day/' + day +'/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
+      btn = '<div class="navigator"><a href="/day/' + day +'/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
             '<a href="/day/' + day +'/' + (Number(lesson) + 1) + '/">Next</a></div>'
     }else{
-      btn = '<div><a href="/day/' + day +'/' + (Number(lesson) + 1) + '/">Next</a></div>'
+      btn = '<div class="navigator"><a href="/day/' + day +'/' + (Number(lesson) + 1) + '/">Next</a></div>'
     }
   }
 
@@ -72,7 +72,7 @@ function router(app) {
     next();
   });
 
-  app.get('/day/:day/:lesson/*.(css|png|js|jpg|gif|webm)', function(req, res, next){
+  app.get('/day/:day/:lesson/*.(css|png|js|jpg|gif|webm|txt|cvs|xsl)', function(req, res, next){
     var file = req.url.split('/').pop();
     var day = req.params.day;
     var url = join(config.views, 'days', day, 'lessons', file);

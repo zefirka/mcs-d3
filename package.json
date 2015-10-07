@@ -4,7 +4,7 @@
   "description": "Boilerplate for Moscow Coding School D3JS Course",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "start": "node index.js"
   },
   "author": "Trdat Mkrtchyan",
   "license": "MIT",
@@ -13,12 +13,8 @@
   },
   "dependencies": {
     "body-parser": "^1.13.3",
-    "colors": "^1.1.2",
     "express": "^4.13.3",
-    "morgan": "^1.6.1",
-    "serve-favicon": "^2.3.0"
-  },
-  "scripts": {
-    "start": "node index.js"
+    "request": "^2.64.0",
+    "d3": "latest"
   }
 }

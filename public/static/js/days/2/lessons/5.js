@@ -7,7 +7,7 @@ function randomHue(){
 	return ((Math.random() * 257) >> 0).toString(16);
 }
 
-function randomColor(){
+function (){
 	var R = randomHue(),
 		G = randomHue(),
 		B = randomHue();
