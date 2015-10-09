@@ -1,5 +1,6 @@
 var BIG_DATA = [16, 23, 42, 100, 20, 77, 22, 2];
 
+/* Nevermind */
 // var x = d3.scale.linear()
 //     .domain([0, d3.max(BIG_DATA)])
 //     .range([0, 420]);

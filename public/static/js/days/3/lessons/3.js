@@ -18,20 +18,15 @@ var cache = (function(){
 })();
 
 var $limit = $('#limit');
+var $origin = $('#origin');
+
 $limit.on('change', function(){
 	draw(null, Number(this.value));
 });
 
-$.ajax({
-	method: 'GET',
-	url: 'story.txt',
-	dataType: 'text',
-	success: function(text){
-		draw(text, $limit.val());
-	},
-	error: function (error){
-		alert('error');
-	}
+$origin.on('keyup', function(){
+	cache.set();
+	draw(this.value, Number($limit.val()));
 });
 
 function notInExceptions(word){
@@ -88,36 +83,63 @@ function parse(text, limit){
 	return table.slice(0, limit);
 }
 
+function prop(x){
+	return function(d){
+		return d[x];
+	};
+}
+
+var getCount = prop('count');
+var getWord = prop('word');
+
 var PADDING = 5;
+var BAR_WIDTH = 40;
+var MARGIN = PADDING + BAR_WIDTH;
+var CHART_HEIGHT = 500;
+
+var y = d3.scale.linear().range([0, CHART_HEIGHT])
+
 function draw(text, limit){
 	var words = parse(text, limit);
+
+	y.domain([
+		d3.min(words, getCount),
+		d3.max(words, getCount),
+	]);
 
 	d3.select('.chart').html('');
 
 	var svg = d3.select('.chart')
-				.attr('height', words.length * ( 30 + PADDING));
+				.attr('width', words.length * MARGIN)
+				.attr('height', CHART_HEIGHT);
 
 	var bar = svg 	
 		.selectAll("g")
     	.data(words)
-  			.enter().append("g")
+  		.enter().append("g")
     	.attr("transform", function(d, i) { 
-    		return "translate(0," + i * (30 + PADDING) + ")"; 
+    		return "translate(" + (i *  MARGIN) + ",0)"; 
     	});
 
-    bar.append("rect")
-    	.attr("width", function(d) { 
-        	return d.count + 'px';
-        })
-    	.attr("height", 30);
+    bar .append("rect")
+    	.attr('y', function(d) {
+    		return CHART_HEIGHT - y(d.count);
+    	})
+    	.attr("height", function(d){
+    		return y(d.count);
+    	})
+    	.attr("width", BAR_WIDTH)
 
-    bar.append("text")
-   		.attr("x", function(d) { 
-   			return (d.count + 10) + 'px';
-   		})
-    	.attr("y", 30 / 2)
-    	.attr("dy", ".35em")
-    	.text(function(d) { 
-    		return d.word + ' (' + d.count + ')'; 
-    });
+    var rects = bar.selectAll('rect');
+    
+    rects.on('mouseover', function(data){
+    	var popup = d3	.select('body')
+    					.append('div')
+    					.attr('class', 'popup');
+
+    	popup.append('span').text('Word:' + data.word);
+    	popup.append('span').text('Count:' + data.count);
+    }).on('mouseout', function(){
+    	d3.select('div.popup').remove();
+    })
 }
