@@ -29,7 +29,7 @@ var exeptions = [
     'перед', 'такой', 'среди', 'через', 'наших',
     'всякий', 'теперь',
     'чтобы', 'какой', 'тогда', 'долго',
-    'здесь', 'больше', 'будет',
+    'здесь', 'больше', 'будет', 'именно',
     'также', 'этого', 'пусть', 'вдруг'
 ]
 
@@ -38,7 +38,10 @@ var equals = [
     { reg: /^врем[яе]*/, to: 'время' },
     { reg: /^хребт*/, to: 'хребты' },
     { reg: /^старц*/, to: 'старцы' },
-    { reg: /^земл*/, to: 'земля' }
+    { reg: /^земл*/, to: 'земля' },
+    { reg: /^голов*/, to: 'голова' },
+    { reg: /^((страх*)|(ужас*))/, to: 'страх'},
+    { reg: /^безуми*/, to: 'безумие'}
 ];
 
 $limit.on('change', function(){
@@ -154,7 +157,7 @@ function draw(text, limit){
     chart.attr("width", bar_width * data.length + margin.left + margin.right);
     svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    x = x.rangeRoundBands([0, bar_width * data.length - data.length], .1);
+    x = x.rangeRoundBands([0, bar_width * data.length], .1);
     xAxis = xAxis.scale(x);
 
     svg.html('');    
