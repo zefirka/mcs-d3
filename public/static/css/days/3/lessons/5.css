@@ -1,0 +1,29 @@
+.chart{
+	
+}
+
+.bar:hover{
+	stroke-width:1px;
+	stroke:black;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.popup{
+	fill: white;
+	stroke-width:1;
+	stroke:#6F0505;
+}
+
+.b-popup text{
+	font:10px sans-serif;
+}
