@@ -1,0 +1,10 @@
+.yAxis path,
+.yAxis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: geometricPrecision;
+}
+
+.yAxis text{
+	font:10px sans-serif;
+}
