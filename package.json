@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "run": "node index.js",
-    "postinstall": "tasks/post-install"
+    "postinstall": "chmod 777 tasks/*; tasks/post-install",
+    "lint" : "./tasks/lint-all"
   },
   "author": "Trdat Mkrtchyan",
   "license": "MIT",
