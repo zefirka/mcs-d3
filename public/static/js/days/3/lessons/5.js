@@ -300,15 +300,15 @@ legendHideButton.on('click', onLegendHideButtonClick);
 function onBarMouseEnter(){
   /* В случае, когда выбрана опция показывать только один жанр,
      сразу прекращаем обработку события */
-  if(selectedGenre){
-    return;
-  }
+  // if(selectedGenre){
+  //   return;
+  // }
 
   var selection = d3.select(this);
   var decade = selection.attr('data-decade');
   var selectedHeight = Number(selection.attr('height'));
   var title = this.__data__.title
-  var titleLength = title.length;
+  var titleLength = selectedGenre ? String(value).length : title.length;
   var value = this.__data__.value;
 
   var others = d3.selectAll('.bar[data-decade="' + decade + '"]');
@@ -349,7 +349,7 @@ function onBarMouseEnter(){
     .attr('y', p.y)
     .attr('width', p.w)
     .attr('height', 30)
-  
+
   popup.append('svg')
     .attr('width', p.w)
     .attr('height', 30)
@@ -360,7 +360,7 @@ function onBarMouseEnter(){
     .attr('y', '50%')
     .attr('text-anchor', 'middle')
     .attr('alignment-baseline', 'middle')
-    .text(title + '  (' + value + ')')
+    .text(!selectedGenre ? (title + '  (' + value + ')') : value);
 }
 
 /* 
@@ -368,16 +368,14 @@ function onBarMouseEnter(){
  * Внутри тела функции this ссылается на элемент столбца
  */
 function onBarMouseLeave(){
-  if(selectedGenre){
-    return;
-  }
-
   d3.select('.b-popup').remove();
-  d3.selectAll('.bar').style('display', function(){
-    var bar = d3.select(this);
-    var isBarHidden = hiddenGenres[bar.attr('data-genre')];
-    return isBarHidden ? 'none' : 'block';
-  });
+  if(!selectedGenre){ 
+    d3.selectAll('.bar').style('display', function(){
+      var bar = d3.select(this);
+      var isBarHidden = hiddenGenres[bar.attr('data-genre')];
+      return isBarHidden ? 'none' : 'block';
+    });
+  }
 }
 
 
