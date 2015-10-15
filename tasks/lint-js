@@ -6,7 +6,6 @@ if [ $# -eq 0 ]; then
 fi
 
 echo '[jshint]'
-echo `$($*)`
 node_modules/.bin/jshint --reporter node_modules/jshint-stylish/index.js $* || ERRORS=1
 
 echo '[jscs]'

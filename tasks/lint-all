@@ -1,6 +1,6 @@
 #!/bin/sh
 
-JS=`git diff --cached --name-status | awk '$1 != "R" && $1 != "D" { print $2 }' | sed -E '/i18n|(bemjson|deps)\.js$/d' | sed -n '/\.js$/p'`
+JS=`find $(pwd)/public  $(pwd)/node | grep ".js"`
 
 if [ "$JS" ]; then
   ./tasks/lint-js $JS || ERRORS=1

@@ -1,14 +1,13 @@
 /* Вертикальаня шкала */
 var y = d3.scale.linear()
   .range([0, 400])
-  .domain([1, 5])
+  .domain([1, 5]);
 
 /* Ось */
 var yAxis = d3.svg.axis()
   .scale(y)
   .orient('left')
-  .ticks(10, .01);
-
+  .ticks(10, 0.01);
 
 /******************/
 /*  Рисование оси */

@@ -1,10 +1,10 @@
 var bodyParser      = require('body-parser');
 var config          = require('./config/');
 
-module.exports = function(app){
+module.exports = function (app) {
   /* Configure middlewares */
   app.use(bodyParser.urlencoded({
-    extended : true
+    extended: true
   }));
 
   /* Body parser configuration */

@@ -1,11 +1,14 @@
 {
     "esnext": true,
     "preset": "yandex",
+    "validateIndentation": 2,
     "disallowMultipleVarDecl": null,
     "requireSpaceAfterLineComment": null,
+    "disallowImplicitTypeConversion": null,
     "excludeFiles": [
         "node_modules/**",
         ".git/**",
-        "tasks/**"
+        "tasks/**",
+        "public/static/js/d3.js"
     ]
 }
