@@ -1,10 +1,14 @@
 var cns = document.getElementById('console');
 
-function code() {
-  var argv = [].slice.call(arguments);
+function code(source) {
+  var str = source.toString();
+
+  if (typeof source === 'object'){
+    str = JSON.stringify(source);
+  }
 
   if (cns){
-    cns.innerHTML = argv.map(JSON.stringify);
+    cns.innerHTML = str;
   }
 
 }

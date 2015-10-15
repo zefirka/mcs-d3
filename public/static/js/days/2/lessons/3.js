@@ -3,7 +3,7 @@ var exceptions = [];
 
 var words = theStory.replace(/[\.,\?\!\;\:\-«»\"\'\)\(]/g, ' ').split(/\s/);
 
-var dicionary = parse(words);
+var dictionary = parse(words);
 
 /*
  * Цель задания - реализовать функцию parse
@@ -19,3 +19,7 @@ var dicionary = parse(words);
  * Исключения лежат в массиве exceptions, а однородные слова
  * в массиве similiars.
  */
+
+function parse(text) {
+  // your code goes here
+}

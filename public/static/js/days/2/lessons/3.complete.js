@@ -15,7 +15,7 @@ var exceptions = [
 
 var words = theStory.replace(/[\.,\?\!\;\:\-«»\"\'\\(]/g, ' ').split(/\s/);
 
-var dicionary = parse(words);
+var dictionary = parse(words);
 
 /*
  * Цель задания - реализовать функцию parse

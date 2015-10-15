@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <link rel="stylesheet" type="text/css" href="/static/js/lib/github.css">
+    <script type="text/javascript" src="/static/js/lib/highlight.min.js"></script>
+    <script src="http://chancejs.com/chance.min.js"></script>
+    <script type="text/javascript" src="/static/js/data/data.2.1.js"></script>
+    <title>2/1 :: Структуры данных. Основные операции.</title>
+  </head>
+  <body class="b-inner">
+    <section class="b-container">
+      <h4>Суть</h4>
+      <p>В документе есть переменная под названием <code>bigData</code>, которая представляет массив объектов (пользователей). Нужно с ним поиграть.</p>
+      <p>Например:</p>
+      <ul>
+        <li>Вывести самого старого и самого молодого пользователя</li>
+        <pre class="javascript"><code>
+var oldestUser = bigData.reduce(function (oldest, user) {
+  return user.age > oldest.age ? user : oldest;
+});
+
+var youngestUser = bigData.reduce(function (youngest, user) {
+  return user.age < youngest.age ? user : youngest;
+});
+        </code></pre>
+
+
+
+        
+        <li>Посчитать количество тезок и/или однофамильцев</li>
+        <pre class="javascript"><code>
+var names = {
+  first: {},
+  last: {}
+};
+var namesakes = {
+  first: {},
+  last: {}
+};
+
+bigData.forEach(function(user){
+  var fname = user.name.first;
+  var lname = user.name.last;
+
+  names.first[fname] = !names.first[fname] ? 1 : 2;
+  names.last[lname] = !names.last[lname] ? 1 : 2;
+
+  if(names.first[fname] > 1){
+    namesakes.first[fname] = namesakes.first[fname] || 1;
+    namesakes.first[fname] += 1;
+  }
+
+  if(names.last[lname] > 1){
+    namesakes.last[lname] = namesakes.last[lname] || 1;
+    namesakes.last[lname] += 1;
+  }
+});
+        </code></pre>
+
+
+
+        <li>Посчитать отношение количества мужчин и женщин</li>
+        <pre class="javascript"><code>
+function propEq(prop, value){
+  return function(data){
+    return data[prop] === value;
+  }
+}
+
+var women = bigData.filter(propEq('gender', 'Female')).length;
+var men = bigData.filter(propEq('gender', 'Male')).length;
+var value = men/women;
+        </code></pre>
+
+
+        <li>Посчитать количество людей в имени которых больше n букв</li>
+        <pre class="javascript"><code>
+function countNLettersInName(n, type){
+  return bigData.filter(function(user){
+    return user.name[type || 'first'].length > n;
+  }).length;
+}        
+      </code></pre>
+      </ul>
+    </section>
+  
+    <script type="text/javascript">
+      hljs.initHighlightingOnLoad();
+      [].forEach.call(document.querySelectorAll('pre code'), function(block) {
+        hljs.highlightBlock(block);
+      });
+    </script>
+  </body>
+</html>
