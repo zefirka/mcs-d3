@@ -1,0 +1,11 @@
+{
+    "esnext": true,
+    "preset": "yandex",
+    "disallowMultipleVarDecl": null,
+    "requireSpaceAfterLineComment": null,
+    "excludeFiles": [
+        "node_modules/**",
+        ".git/**",
+        "tasks/**"
+    ]
+}

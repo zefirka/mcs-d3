@@ -1,0 +1,7 @@
+**/node_modules/**
+.git
+*.bemjson.js
+*.deps.js
+*.priv.js
+*.bemdecl.js
+./static/.tanker/config.js

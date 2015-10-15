@@ -4,7 +4,9 @@
   "description": "Boilerplate for Moscow Coding School D3JS Course",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "run": "node index.js",
+    "postinstall": "tasks/post-install"
   },
   "author": "Trdat Mkrtchyan",
   "license": "MIT",
@@ -15,6 +17,9 @@
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "request": "^2.64.0",
-    "d3": "latest"
+    "d3": "latest",
+    "jscs": "^2.1.0",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.0.1"
   }
 }

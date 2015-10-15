@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo "Commit!"
+
+CSS=`git diff --cached --name-status | awk '$1 != "R" && $1 != "D" { print $2 }' | sed  -n '/\.css$/p'`
+JS=`git diff --cached --name-status | awk '$1 != "R" && $1 != "D" { print $2 }'  | awk '{if ($1 ~ /.js$/ && $1 !~/.spec.js$/ && $1 !~/.ss2.js$/) print $1}'`
+TEST=`git diff --cached --name-status | awk '$1 != "R" && $1 != "D" { print $2 }' | sed -n '/\.test\.js$/p'`
+
+# if [ "$CSS" ]; then
+#   ./tasks/lint-css $CSS || ERRORS=1
+# fi
+
+if [ "$JS" ]; then
+  ./tasks/lint-js $JS || ERRORS=1
+fi
+
+#if [ "$TEST" ]; then
+#  ./tasks/lint-test-only $TEST || ERRORS=1
+#fi
+
+exit $ERRORS
