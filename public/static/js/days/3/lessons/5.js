@@ -1,4 +1,4 @@
-
+/****************************************/
 /* Хелперы */
 
 /* Возвращает случайное число HEX-число (до 256) */
@@ -29,6 +29,15 @@ function prop(x){
     return d[x];
   };
 }
+
+function rotate(deg){
+  return function(){
+    var x = Number(d3.select(this).attr('x'))// + 4.1;
+    var y = Number(d3.select(this).attr('y'))// + 8;
+    return 'rotate(' + deg + ', ' + x +',' + y + ')';
+  }
+}
+
 
 
 /**
@@ -63,7 +72,7 @@ var MARGIN = {
   left: 60
 };
 
-// Палки
+// Свойства столбцов
 var BAR = {
   padding : 5,
   width: 40
@@ -71,7 +80,8 @@ var BAR = {
 
 // Общая высота и ширина гистограммы
 var WIDTH = 800,
-    HEIGHT = 500;
+    HEIGHT = 500,
+    POPUP_MIN_WIDTH = 80;
 
 /* Данные для преобразований */
 var decades = ['60', '70', '80', '90', '00', '10'];
@@ -106,7 +116,9 @@ var hiddenGenres = {}; // скрытые жанры
 
 
 
-/********************/
+
+
+/****************************************/
 /* Шкалы */
 
 // Горизонтальная шакала 
@@ -123,7 +135,10 @@ var y = d3.scale.linear()
 
 
 
-/********************/
+
+
+
+/****************************************/
 /* Оси */
 
 /* Абсцисс */ 
@@ -139,8 +154,10 @@ var yAxis = d3.svg.axis()
 
 
 
-/********************/
-/*  Рисование */
+
+
+/****************************************/
+/*  Рисование осей и столбцов */
 
 var chart = d3.select('svg')
   .attr('height', HEIGHT + MARGIN.top + MARGIN.bottom)
@@ -185,51 +202,145 @@ var bars = workspace.selectAll('.bar')
   })
   .attr('height', function(d) { 
       return HEIGHT - y(d.value); 
-  })
+  });
 
-/** События палок */
-bars.on('mouseenter', function(){
+
+
+
+
+/****************************************/
+/* Легенда */
+
+/* Параметры легенды */
+var LEGEND = {
+  paddingLeft: (((BAR.width + BAR.padding) * 6) + 90),
+  width: 140,
+  height: 30,
+  marginBottom: 15,
+  textMargin: 38
+};
+
+LEGEND.textHeight =  LEGEND.height/2 + LEGEND.marginBottom;
+
+var legend = chart.append('g')
+    .attr('transform', 'translate('+ LEGEND.paddingLeft + ', ' + MARGIN.top+ ')');
+
+var legends = legend.selectAll('g')
+  .data(genres)
+  .enter().append('g')
+  .attr('transform', function(d, i){
+    return 'translate(0, ' +  i * (LEGEND.height + LEGEND.marginBottom) + ')';
+  });
+
+var legendButton = legends.append('rect')
+  .attr('class', 'legend-item')
+  .attr('fill', getColor)
+  .attr('width', LEGEND.height)
+  .attr('height', LEGEND.height);
+
+var legendGenreText = legends
+    .append('svg')
+  .attr('height', LEGEND.textHeight)
+  .attr('width', LEGEND.width)
+  .attr('x', LEGEND.textMargin)
+    .append('text')
+  .attr('class', 'legend')
+  .text(getGenre)
+  .attr('y', '50%')
+  .attr('alignment-baseline', 'middle')
+
+var legendHideButton = legends
+  .append('svg')
+  .attr('height', LEGEND.textHeight)
+  .attr('width', LEGEND.width)
+  .attr('x', LEGEND.textMargin)
+    .append('text')
+  .attr('class', 'remove')
+  .text('+')
+  .attr('x', LEGEND.width)
+  .attr('y', LEGEND.height/2)
+  .attr('dominant-baseline', 'central')
+  .attr('text-anchor', 'end')
+  .attr('alignment-baseline', 'middle')
+  .attr('transform', rotate(-45))
+  .attr('data-genre', getGenre)
+
+
+
+
+
+/****************************************/
+/* События и интерактивность */
+
+/* События столбцов */
+bars
+  .on('mouseenter', onBarMouseEnter)
+  .on('mouseleave', onBarMouseLeave);
+
+/* События кнопок легенды */
+legendButton.on('click', onLegendButtonClick);
+
+/* События кнопок скрытия жанра */
+legendHideButton.on('click', onLegendHideButtonClick);
+
+
+
+
+
+/****************************************/
+/* Обработчики событий */
+
+/* 
+ * Обработчик события mouseenter на столбец гистограммы 
+ * Внутри тела функции this ссылается на элемент столбца
+ *
+ * 1) Показывает столбец во всю ширину
+ * 2) Рисует попап над столбцом где с подробной информацией
+ */
+function onBarMouseEnter(){
+  /* В случае, когда выбрана опция показывать только один жанр,
+     сразу прекращаем обработку события */
   if(selectedGenre){
     return;
   }
 
-  var MIN_WIDTH = 80;
-  var $selected = $(this);
-  var decade = $selected.data('decade');
-  var others = $('.bar[data-decade="' + decade + '"]');
-  var selectedHeight = Number($selected.attr('height'));
-  var d3Selection = d3.select(this);
-  var _this = this;
+  var selection = d3.select(this);
+  var decade = selection.attr('data-decade');
+  var selectedHeight = Number(selection.attr('height'));
+  var title = this.__data__.title
+  var titleLength = title.length;
+  var value = this.__data__.value;
 
-  others.each(function(){
-    var $bar = $(this);
-    var height = Number($bar.attr('height'));
+  var others = d3.selectAll('.bar[data-decade="' + decade + '"]');
+
+  others.style('display', function(d){
+    var bar = d3.select(this);
+    var height = Number(bar.attr('height'));
     if( height < selectedHeight){
-      $bar.hide();
+      return 'none';
     }
   });
 
   var popup = workspace.append('g')
-      .attr('transform', 'translate(0,-60)')
-      .attr('class', 'b-popup')
+    .attr('transform', 'translate(0,-60)')
+    .attr('class', 'b-popup')
   
+  /* Конфигурация параметром попапа */
   var p = (function(){
-    var width = MIN_WIDTH;
-    var letters = _this.__data__.title.length;
-    var c = letters > 15 ? (letters - 15) * 9 : 0;
-    width = MIN_WIDTH + c;
-    
-    var maxY = y([].reduce.call(others, function(sum, elem){
-      return elem.__data__.value > sum ? elem.__data__.value : sum;
+    var maxY = y(BIG_DATA.filter(function(data){
+      return data.decade === decade;
+    }).reduce(function(sum, elem){
+      return elem.value > sum ? elem.value : sum;
     }, 0));
 
-    var x = Number(d3Selection.attr('x')) - width/2 + BAR.width/2;
+    var width = POPUP_MIN_WIDTH + (titleLength > 15 ? (titleLength - 15) * 9 : 0);
+    var x = Number(selection.attr('x')) - width/2 + BAR.width/2;
 
     return {
       y: maxY,
       w: width,
       x: x
-    }
+    };
   })();
     
   popup.append('rect')
@@ -249,117 +360,75 @@ bars.on('mouseenter', function(){
     .attr('y', '50%')
     .attr('text-anchor', 'middle')
     .attr('alignment-baseline', 'middle')
-    .text(function(){
-      var d = _this.__data__;
-      return d.title + '  (' + d.value + ')';
-    })
+    .text(title + '  (' + value + ')')
+}
 
-}).on('mouseleave', function(){
+/* 
+ * Обработчик события mouseleave на столбец гистограммы 
+ * Внутри тела функции this ссылается на элемент столбца
+ */
+function onBarMouseLeave(){
   if(selectedGenre){
     return;
   }
 
   d3.select('.b-popup').remove();
-  
-  $('.bar').each(function(){
-    var bar = $(this);
-    if(!hiddenGenres[bar.data('genre')]){
-      bar.show();
-    }
+  d3.selectAll('.bar').style('display', function(){
+    var bar = d3.select(this);
+    var isBarHidden = hiddenGenres[bar.attr('data-genre')];
+    return isBarHidden ? 'none' : 'block';
   });
-});
-
-/** Интерактивная легенда */
-
-/* Параметры легенда */
-
-var LEGEND = {
-  width: (((BAR.width + BAR.padding) * 6) + 90),
-  height: 30,
-  marginBottom: 15
 }
 
-var legend = chart.append('g')
-    .attr('transform', 'translate('+ LEGEND.width + ', ' + MARGIN.top+ ')')
 
-var legends = legend.selectAll('g')
-  .data(genres)
-  .enter().append('g')
-  .attr('transform', function(d, i){
-    return 'translate(' + 0 + ',' +  i * (LEGEND.height + LEGEND.marginBottom) + ')'
-  })
+/* 
+ * Обработчик события mouseleave на столбец гистограммы 
+ * Внутри тела функции this ссылается на элемент кнопки легенды
+ */
+function onLegendButtonClick(){
+  var genre = this.__data__.genre;
+  var newSelectedGenre = null;
 
-legends.append('rect')
-  .attr('class', 'legend-item')
-  .attr('fill', getColor)
-  .attr('width', LEGEND.height)
-  .attr('height', LEGEND.height)
-  .attr('x', 0)
-  .attr('y', 0)
-  .on('click', function(){
-    if(selectedGenre){
-      $('.bar').not('[data-genre="' + selectedGenre + '"]').show();
+  d3.selectAll('.bar')
+    .transition()
+    .duration(230)
+    .delay(100)
+    .style('opacity', rangeOption('0', '1'))
+    .style('display', rangeOption('none', 'block'))
+  
+  selectedGenre = newSelectedGenre;
+  function rangeOption(from, to){
+    return function(d) {
+      if(selectedGenre && selectedGenre === genre){
+        newSelectedGenre = null;
+        return to;
+      }
+      newSelectedGenre = genre;
+
+      return d.title === genre ? (this.hidden ? from : to) : from;
     }
+  }
+}
 
-    var genre = this.__data__.genre;    
-    selectedGenre = genre;
+/* 
+ * Обработчик события mouseleave на столбец гистограммы 
+ * Внутри тела функции this ссылается на элемент кнопки сокрытия жанра
+ */
+function onLegendHideButtonClick(d){
+  var genre = d.genre;
+  var hidden = this.hidden;
 
-    if(hiddenGenres[genre]){
-      alert('Genre :' + genre + ' is hidden');
-      selectedGenre = null;
-      return;
-    }
+  d3.select(this)
+    .transition()
+    .duration(100)
+    .attr('transform', hidden ? rotate(-45) : rotate(0));
+  
+  d3.selectAll('.bar[data-genre="' + genre + '"]')
+    .attr('display', hidden ? 'block' : 'none')
+    .each(function(d){
+      this.hidden = hidden;
+    });
 
-
-    if(!this.__state__){
-      $('.bar').not('[data-genre="' + genre + '"]').hide();
-    }else{
-      $('.bar').not('[data-genre="' + genre + '"]').show();
-      selectedGenre = null;
-    }
-    this.__state__ = !this.__state__
-
-  });
-
-legends
-    .append('svg')
-  .attr('height', 40)
-  .attr('width', 140)
-  .attr('x', 35)
-  .attr('y', -5)
-    .append('text')
-  .attr('class', 'legend')
-  .text(getGenre)
-  .attr('y', '50%')
-  .attr('alignment-baseline', 'middle')
-
-legends
-  .append('svg')
-  .attr('height', 40)
-  .attr('width', 140)
-  .attr('x', 35)
-  .attr('y', -5)
-    .append('text')
-  .attr('class', 'remove')
-  .text('ø')
-  .attr('x', '100%')
-  .attr('y', '50%')
-  .attr('data-genre', getGenre)
-  .attr('alignment-baseline', 'middle')
-  .attr('text-anchor', 'end')
-  .on('click', function(){
-    var genre = $(this).data('genre');
-
-    if(!this.__isShown){
-      d3.select(this).text('$');
-      $('.bar[data-genre="' + genre + '"]').hide();
-      hiddenGenres[genre] = true;
-    }else{
-      d3.select(this).text('ø')
-      $('.bar[data-genre="' + genre + '"]').show();
-      hiddenGenres[genre] = false;
-    }    
-
-    this.__isShown = !this.__isShown;
-  })
-
+  hiddenGenres[genre] = Boolean(!this.hidden);
+  this.hidden = !this.hidden;
+}

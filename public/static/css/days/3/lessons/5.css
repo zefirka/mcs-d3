@@ -27,6 +27,7 @@
 	font: 14px sans-serif;
 	fill: #940E0E;
 	cursor: pointer;
+	transform-origin: 50% 50%;
 }
 
 .b-popup text,
