@@ -1,17 +1,25 @@
-.b-inner{
+body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
 }
 
-.b-inner a{
+a{
   color: #1D1D5C;
 }
 
-.b-inner a:hover{
+a:hover{
   color: #A00808;
 }
 
-.b-inner a:visited{
+a:visited{
   color: #720C23;
+}
+
+.b-list{
+  margin-bottom: 20px;
+}
+
+.b-list ol{
+  margin-bottom: 5px;
 }

@@ -1,18 +1,16 @@
-.chart{
-	
-}
-
-.axis {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
+.yAxis path,
+.yAxis line,
+.xAxis path,
+.xAxis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
+  shape-rendering: geometricPrecision;
 }
 
-.x.axis path {
-  display: none;
+.yAxis text{
+	font:10px sans-serif;
+}
+
+.xAxis text{
+	font:14px sans-serif;
 }

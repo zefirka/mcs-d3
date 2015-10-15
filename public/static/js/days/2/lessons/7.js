@@ -5,7 +5,7 @@ var BIG_DATA = [16, 23, 42, 100, 20, 77, 22, 2];
 //     .domain([0, d3.max(BIG_DATA)])
 //     .range([0, 420]);
 
-d3.select('.container')
+d3.select('.chart')
   .selectAll('div')
     .data(BIG_DATA).enter()
   .append('div')
