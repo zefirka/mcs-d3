@@ -1,13 +1,13 @@
 // var bigData = [10, 30, 20, 50, 26];
 
-// var container = $('.container');
+// var chart = $('.chart');
 
 // // naive
 
 // function naive(item){
 //  var $bar = $('<div class="bar"></div>');
 //  $bar.css('width', item);
-//  container.append($bar);
+//  chart.append($bar);
 // }
 
 // function complex(item){
@@ -17,7 +17,7 @@
 //      }
 //  }
 
-//  var width = scale(0, container.width(), 10, 50, 27.5)
+//  var width = scale(0, chart.width(), 10, 50, 27.5)
 
 //  return naive(width(item));
 // }
@@ -25,6 +25,6 @@
 // bigData.forEach(complex);
 
 // $(window).resize(function(){
-//  container.html('');
+//  chart.html('');
 //  bigData.forEach(complex);
 // })

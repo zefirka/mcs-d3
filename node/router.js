@@ -57,6 +57,10 @@ function interpolate(html, day, lesson) {
         '</div>';
     }
   }
+
+  if (lesson === 'links'){
+    btn = '';
+  }
   //jscs:enable maximumLineLength
   return html .replace('</title>', '</title>' + css)
               .replace('</body>', btn + '</body>')

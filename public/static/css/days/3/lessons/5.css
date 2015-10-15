@@ -1,37 +1,7 @@
-.chart{
-	
-}
-
-.bar:hover,
-.legend-item{
-	stroke-width:1px;
-	stroke:black;
-	cursor: pointer;
-}
-
-.axis path,
-.axis line {
-  fill: none;
+.arc path:hover {
   stroke: #000;
-  shape-rendering: crispEdges;
 }
 
-.popup{
-	fill: white;
-	stroke-width:1;
-	stroke:#6F0505;
-}
-
-
-.remove{
-	font: 14px sans-serif;
-	fill: #940E0E;
-	cursor: pointer;
-	transform-origin: 50% 50%;
-}
-
-.b-popup text,
-.axis,
-.legend{
-	font:10px sans-serif;
+.arc text{
+	font: 12px "Helvetica Neue"; 
 }

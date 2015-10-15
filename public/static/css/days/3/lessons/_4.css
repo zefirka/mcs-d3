@@ -1,9 +1,9 @@
-.axis {
-  font: 10px sans-serif;
+.chart{
+	
 }
 
-.yAxis{
-	font: 10px sans-serif;
+.axis {
+  font: 10px sans-serif;
 }
 
 .axis path,
@@ -15,8 +15,4 @@
 
 .x.axis path {
   display: none;
-}
-
-.bar:hover{
-	fill: #920707;
 }
