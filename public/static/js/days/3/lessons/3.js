@@ -46,7 +46,7 @@ var xAxis = d3.svg.axis()
   .scale(y)
   .orient('bottom');
 
-var axisElement = d3.select('.chart-ordinal')
+var axisElement = d3.select('.chart-ordina  l')
     .attr('height', WIDTH)
     .attr('width', HEIGHT)
   .append('g')

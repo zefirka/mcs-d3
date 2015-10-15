@@ -6,7 +6,7 @@ var MIN_TEXT_LENGTH = 100;
 /* Получаем данные */
 $.ajax({
   method: 'GET',
-  url: 'story.txt',
+  url: 'story.txt', // тарас бульба
   dataType: 'text',
   success: draw, // <- Вот эта функция вызывается, если все ок.
   error: alert
