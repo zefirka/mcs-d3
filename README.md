@@ -8,3 +8,8 @@ npm install
 npm start
 ```
 
+## Линтинг
+```
+npm run lint
+```
+Скрипт запускает JSCS и JSHint по всем ключевым .js файлам в репозитории.
