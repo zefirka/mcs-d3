@@ -1,10 +1,19 @@
 var BIG_DATA = [16, 23, 42, 100, 20, 77, 22, 2];
+var WIDTH = $(window).width();
+var BAR = {
+  width: 30,
+  padding: 5
+};
 
 /* Избавиться от магических чисел */
 
+// var x = d3.scale.linear()
+//     .domain([0, d3.max(BIG_DATA)])
+//     .range([0, WIDTH]);
+
 var chart = d3.select('.chart')
-  .attr('width', 120)
-  .attr('height', BIG_DATA.length * (30 + 5));
+  .attr('width', WIDTH)
+  .attr('height', BIG_DATA.length * (BAR.width + BAR.padding));
 
 var bars = chart
   .selectAll('rect')
@@ -13,12 +22,14 @@ var bars = chart
   .attr('class', 'bar')
   .attr('x', 0)
   .attr('y', function (d, i) {
-    return (30 + 5) * i;
+    return (BAR.width + BAR.padding) * i;
   })
   .attr('width', function (d) {
     return d + 'px';
+    //return x(d);
+
   })
-  .attr('height', 30)
+  .attr('height', BAR.width)
   .attr('fill', 'red');
 
 var texts = chart
@@ -27,7 +38,7 @@ var texts = chart
   .append('text')
   .attr('x', 0)
   .attr('y', function (d, i) {
-    return (30 + 5) * i + 30 / 2;
+    return (BAR.width + BAR.padding) * i + BAR.width / 2;
   })
   .text(function (d) {
     return d;

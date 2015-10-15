@@ -1,0 +1,18 @@
+.container{
+	width: 100%;
+}
+
+.bar {
+	height: 30px;
+	margin-bottom: 5px;
+	background: red;
+	position: relative;
+}
+
+.bar .text{
+	position: absolute;
+	top: 8px;
+	line-height: 30px;
+	font: 12px sans-serif;
+	right: -25px;
+}

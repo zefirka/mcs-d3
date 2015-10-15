@@ -13,7 +13,6 @@ module.exports = function () {
   Middlewares(app);
   Router(app);
 
-  /* Useragent enviroment configuration */
   app.use(express.static(config.public));
 
   return app;

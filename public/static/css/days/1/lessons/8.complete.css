@@ -1,0 +1,52 @@
+h2{
+    font-family: sans-serif;
+}
+
+.chart{
+    width: 500px;
+}    
+
+.bar{
+    height: 40px;
+    margin-bottom: 20px;
+    position: relative;
+    border-spacing: 2px;
+}
+
+.bar .count{
+    position: absolute;
+    top: 13px;
+    right: -20px;
+    font: 12px sans-serif;
+}
+
+.bar .title{
+    font: 12px sans-serif;
+    display: block;
+    position: absolute;;
+    top: -14px;
+    left: 0px;
+}
+
+.total{
+    background: grey;
+    width: 500px;
+}
+
+.reds{
+    background: red;
+    /* (500/20) * 18 */
+    width: 450px
+}
+
+.greens{
+    background: green;
+    /* (500/20) * 14 */
+    width: 350px;
+}
+
+.blues{
+    background: blue;
+    /* (500/20) * 8 */
+    width: 200px;
+}

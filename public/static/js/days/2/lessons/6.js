@@ -1,30 +1,14 @@
-// var bigData = [10, 30, 20, 50, 26];
+var bigData = [10, 30, 20, 50, 26];
 
-// var chart = $('.chart');
+/*
+ * Цель урока - написать функцию, которая принимает
+ * массив чисел и визуализирует из с помощью гистограммы
+ * В идеале, это функция должна быть отзывчиваой и
+ * заполнять всю свободную ширину окна, т.е.
+ * перестраиваться, когда размер окна меняется
+ */
+function draw(data) {
+  // your code goes here
+}
 
-// // naive
-
-// function naive(item){
-//  var $bar = $('<div class="bar"></div>');
-//  $bar.css('width', item);
-//  chart.append($bar);
-// }
-
-// function complex(item){
-//  function scale(from, to, min, max, ck){
-//      return function(value){
-//          return ((to - from) / (max - min + ck)) * value;
-//      }
-//  }
-
-//  var width = scale(0, chart.width(), 10, 50, 27.5)
-
-//  return naive(width(item));
-// }
-
-// bigData.forEach(complex);
-
-// $(window).resize(function(){
-//  chart.html('');
-//  bigData.forEach(complex);
-// })
+draw(bigData);

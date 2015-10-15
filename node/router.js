@@ -2,21 +2,37 @@ var fs   = require('fs');
 var join   = require('path').join,
     config = require('./config');
 
-function nextLesson() {
+var completes = require('./lessons.json').hasCompleted;
+
+function nextLesson(day) {
   return '' +
     '<link rel="stylesheet" type="text/css" href="/static/css/main.css">' +
     '<div class="b-inner">' +
       '<div>На этом все.</div>' +
-      '<div><a href="#" onClick="history.back(2)">Назад</a>' +
+      '<div><a href="/day/' + day + '">Назад</a>' +
       '<div><a href="/">В начало</a>' +
     '</div>';
 }
 
-function interpolate(html, day, lesson) {
+function putComplete(day, lesson, complete) {
+  if (~completes[day].indexOf(Number(lesson))){
+    return '' +
+      '<div>' +
+        (!complete ?
+          ('<a href="/day/' + day + '/' + lesson + '/complete">Показать результат</a>') :
+          ('<a href="/day/' + day + '/' + lesson + '">Вернуться к уроку</a>')) +
+      '</div>';
+  }else {
+    return '';
+  }
+}
+
+function interpolate(html, day, lesson, complete) {
   //jscs:disable maximumLineLength
   var css = '<link rel="stylesheet" type="text/css" href="/static/css/main.css">';
   var js = '<script type="text/javascript" src="/static/js/main.js"></script>';
   var btns = '';
+  var fname = lesson;
 
   if (day){
     css += '\n<link rel="stylesheet" type="text/css" href="/static/css/days/' + day + '/style.css">';
@@ -24,8 +40,12 @@ function interpolate(html, day, lesson) {
   }
 
   if (lesson){
-    css += '\n<link rel="stylesheet" type="text/css" href="/static/css/days/' + day + '/lessons/' + lesson + '.css">';
-    js += '\n<script type="text/javascript" src="/static/js/days/' + day + '/lessons/' + lesson + '.js"></script>';
+    css += '\n<link rel="stylesheet" type="text/css" href="/static/css/days/' + day + '/lessons/' +
+      (complete ? (lesson + '.complete') : lesson) +
+    '.css">';
+    js += '\n<script type="text/javascript" src="/static/js/days/' + day + '/lessons/' +
+      (complete ? (lesson + '.complete') : lesson) +
+    '.js"></script>';
   }
 
   if (day && !lesson){
@@ -42,6 +62,7 @@ function interpolate(html, day, lesson) {
             '<a href="/day/' + day + '/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
             '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
           '</div>' +
+          putComplete(day, lesson, complete) +
           '<div>' +
             '<div><a href="/">На главную</a></div>' +
           '</div>';
@@ -50,7 +71,8 @@ function interpolate(html, day, lesson) {
         '<div class="b-inner">' +
           '<div>' +
             '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
-           '</div>' +
+          '</div>' +
+          putComplete(day, lesson, complete) +
           '<div>' +
             '<a href="/">На главную</a>' +
           '</div>' +
@@ -73,7 +95,48 @@ function isFileExist(url, yes, no) {
   });
 }
 
-function router(app) {
+function onLesson(complete) {
+  return function (req, res, next) {
+    var day = req.params.day;
+    var lesson = req.params.lesson;
+    var fileAddr = join(config.views, 'days', day, 'lessons', lesson + '.html');
+
+    if (lesson === 'links'){
+      fileAddr = join(config.views, 'days', day, 'links.html');
+    }
+
+    if (complete){
+      var testFile = join(config.views, 'days', day, 'lessons', lesson + '.complete.html');
+      isFileExist(testFile, function () {
+        response(testFile, day, lesson, complete)(req, res, next);
+      }, function () {
+        response(fileAddr, day, lesson, complete)(req, res, next);
+      });
+    }else {
+      response(fileAddr, day, lesson, complete)(req, res, next);
+    }
+  };
+}
+
+function response(fileAddr, day, lesson, complete) {
+  return function (req, res, next) {
+    isFileExist(fileAddr, function () {
+      var file = fs.readFileSync(fileAddr, {
+        encoding: 'utf-8'
+      });
+
+      file = interpolate(file, day, lesson, complete);
+
+      res.send(file);
+      next();
+    }, function () {
+      res.send(nextLesson(day));
+      next();
+    });
+  };
+}
+
+module.exports = function (app) {
 
   app.get('/', function (req, res) {
     var file = join(config.views, 'index.html');
@@ -92,30 +155,8 @@ function router(app) {
     next();
   });
 
-  app.get('/day/:day/:lesson', function (req, res, next) {
-    var day = req.params.day;
-    var lesson = req.params.lesson;
-    var fileAddr = join(config.views, 'days', day, 'lessons', lesson + '.html');
-
-    if (lesson === 'links'){
-      fileAddr = join(config.views, 'days', day, 'links.html');
-    }
-
-    isFileExist(fileAddr, function () {
-      var file = fs.readFileSync(fileAddr, {
-        encoding: 'utf-8'
-      });
-
-      file = interpolate(file, day, lesson);
-
-      res.send(file);
-      next();
-    }, function () {
-      res.send(nextLesson(day, lesson));
-      next();
-    });
-
-  });
+  app.get('/day/:day/:lesson/complete', onLesson(true));
+  app.get('/day/:day/:lesson', onLesson(false));
 
   app.get('/day/:day/:lesson/*.(css|png|js|jpg|gif|webm|txt|cvs|xsl)', function (req, res, next) {
     var file = req.url.split('/').pop();
@@ -126,6 +167,4 @@ function router(app) {
   });
 
   return app;
-}
-
-module.exports = router;
+};
