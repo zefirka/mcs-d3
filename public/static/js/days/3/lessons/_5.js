@@ -275,12 +275,12 @@ function onBarMouseEnter() {
   //   return;
   // }
 
+  var value = this.__data__.value;
   var selection = d3.select(this);
   var decade = selection.attr('data-decade');
   var selectedHeight = Number(selection.attr('height'));
   var title = this.__data__.title;
   var titleLength = selectedGenre ? String(value).length : title.length;
-  var value = this.__data__.value;
 
   var others = d3.selectAll('.bar[data-decade="' + decade + '"]');
 

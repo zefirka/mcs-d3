@@ -7,7 +7,7 @@
   "indent": 4,
   "latedef": "nofunc",
   "laxbreak": true,
-  "newcap": true,
+  "newcap": false,
   "noarg": true,
   "noempty": true,
   "nonew": true,

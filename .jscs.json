@@ -10,6 +10,8 @@
         ".git/**",
         "tasks/**",
         "public/static/js/d3.js",
-        "./public/static/js/lib/*"
+        "./public/static/js/lib/*",
+        "./public/static/js/data/*",
+        "./node/lessons.json"
     ]
 }
