@@ -1,0 +1,18 @@
+{
+  "expr": true,
+  "jquery": true,
+  "eqnull": true,
+  "funcscope": true,
+  "immed": true,
+  "indent": 4,
+  "latedef": "nofunc",
+  "laxbreak": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "evil": true,
+  "quotmark": "single",
+  "trailing": true,
+  "-W058": false
+}

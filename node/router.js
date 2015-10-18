@@ -19,8 +19,8 @@ function putComplete(day, lesson, complete) {
     return '' +
       '<div>' +
         (!complete ?
-          ('<a href="/day/' + day + '/' + lesson + '/complete">Показать результат</a>') :
-          ('<a href="/day/' + day + '/' + lesson + '">Вернуться к уроку</a>')) +
+          ('<a href="/day/' + day + '/' + lesson + '/complete">Решение</a>') :
+          ('<a href="/day/' + day + '/' + lesson + '">К уроку</a>')) +
       '</div>';
   }else {
     return '';
@@ -50,33 +50,38 @@ function interpolate(html, day, lesson, complete) {
 
   if (day && !lesson){
     btn = '' +
-      '<div class="b-inner">' +
-        '<h2><a href="/day/' + day + '/1/">Приступим</a></h2>' +
-        '<div><a href="/">На главную</a></div>' +
-      '</div>';
+      '<footer>' +
+        '<div class="b-inner">' +
+          '<div><a href="/">На главную</a></div>' +
+        '</div>' +
+      '</footer>';
   }else {
     if (lesson > 1){
       btn = '' +
-        '<div class="b-inner">' +
-          '<div>' +
-            '<a href="/day/' + day + '/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
-            '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
-          '</div>' +
-          putComplete(day, lesson, complete) +
-          '<div>' +
-            '<div><a href="/">На главную</a></div>' +
-          '</div>';
+        '<footer>' +
+          '<div class="b-inner">' +
+            '<div>' +
+              '<a href="/day/' + day + '/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
+              '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
+            '</div>' +
+            putComplete(day, lesson, complete) +
+            '<div>' +
+              '<div><a href="/">На главную</a></div>' +
+            '</div>' +
+        '</footer>';
     }else {
       btn = '' +
-        '<div class="b-inner">' +
-          '<div>' +
-            '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
+        '<footer>' +
+          '<div class="b-inner">' +
+            '<div>' +
+              '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
+            '</div>' +
+            putComplete(day, lesson, complete) +
+            '<div>' +
+              '<a href="/">На главную</a>' +
+            '</div>' +
           '</div>' +
-          putComplete(day, lesson, complete) +
-          '<div>' +
-            '<a href="/">На главную</a>' +
-          '</div>' +
-        '</div>';
+        '</footer>';
     }
   }
 

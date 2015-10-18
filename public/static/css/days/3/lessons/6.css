@@ -1,10 +1,25 @@
-.yAxis path,
-.yAxis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: geometricPrecision;
+.axis path,
+.axis line{
+	fill: none;
+	stroke: black;
 }
 
-.yAxis text{
-	font:10px sans-serif;
+.line{
+	fill: none;
+	stroke: blue;
+	stroke-width: 2px;
+}
+
+.tick text{
+	font-size: 12px;
+}
+
+.tick line{
+	opacity: 0.2;
+}
+
+input {
+	outline: none;
+	border: none;
+	border-bottom: solid 1px #eee;
 }

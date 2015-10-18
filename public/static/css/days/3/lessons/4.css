@@ -20,3 +20,7 @@
 .bar:hover{
 	fill: #920707;
 }
+
+.legend{
+		font: 10px sans-serif;
+}

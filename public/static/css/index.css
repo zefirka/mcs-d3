@@ -1,25 +1,41 @@
-body{
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.42857143;
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	background: #eee;
+	margin: 0;
 }
 
-a{
-  color: #1D1D5C;
+
+h1 {
+	font-size: 32px;
+	margin-top: 5px;
 }
 
-a:hover{
-  color: #A00808;
+
+a {
+	color: #1D1D5C;
 }
 
-a:visited{
-  color: #720C23;
+a:hover {
+	color: #A00808;
 }
 
-.b-list{
-  margin-bottom: 20px;
+a:visited {
+	color: #720C23;
 }
 
-.b-list ol{
-  margin-bottom: 5px;
+.b-list {
+	margin-bottom: 20px;
+}
+
+.b-list ol {
+	margin-bottom: 5px;
+}
+
+.b-container {
+	max-width: 920px;
+	padding: 20px;
+	margin: 0 auto;
+	background: white;
 }

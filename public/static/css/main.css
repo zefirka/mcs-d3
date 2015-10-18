@@ -1,3 +1,7 @@
+body{
+	padding-bottom: 60px;
+}
+
 .b-inner{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -23,4 +27,15 @@
 .b-container{
 	max-width: 960px;
 	margin: 0 auto;
+}
+
+footer{
+	position: fixed;
+	width: 110px;
+	padding: 10px;
+	padding-right: 0;
+	height: 65px;
+	background: rgba(100, 100, 20, 0.3);
+	bottom: 0;
+	right: 0;
 }
