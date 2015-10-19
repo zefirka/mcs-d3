@@ -51,7 +51,7 @@ function interpolate(html, day, lesson, complete) {
     js += script('/static/js/days/' + day + '/main.js');
   }
 
-  if (lesson){
+  if (lesson && lesson !== 'links'){
     css += link('/static/css/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.css');
     js += script('/static/js/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.js');
   }
