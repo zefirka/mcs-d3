@@ -1,3 +1,7 @@
+/**
+  * Task: Вывести самого старого и самого молодого пользователя
+  */
+
 /* Мучительный вариант */
 var oldestUser = {age: 0};
 var youngestUser = null;
@@ -22,15 +26,25 @@ for (var i = 0, l = bigData.length; i < l; i++){
   }
 }
 
-/* ТруЪ вариант */
-var oldestUser = bigData.reduce(function (oldest, user) {
-  return user.age > oldest.age ? user : oldest;
-});
+/* ТруЪ-функциональный вариант */
+function more(a, b) {
+  return a > b;
+}
 
-var youngestUser = bigData.reduce(function (youngest, user) {
-  return user.age < youngest.age ? user : youngest;
-});
+function less(a, b) {
+  return a < b;
+}
 
+function reduceBy(prop, oper) {
+  return function (sum, iter) {
+    return oper(iter[prop], sum[prop]) ? iter : sum;
+  };
+}
+
+var oldestUser = bigData.reduce(reduceBy('age', more));
+var youngestUser = bigData.reduce(reduceBy('age', less));
+
+/** Посчитать количество тезок и/или однофамильцев **/
 /**** Тезки ****/
 var names = {
   first: {},
@@ -59,7 +73,23 @@ bigData.forEach(function (user) {
   }
 });
 
-/* Отношение полов */
+/**
+ * Посчитать отношение количества мужчин и женщин
+ */
+/* Обычный вариант */
+var women = 0;
+var men = 0;
+for (var i = 0, l = bigData.length; i < l; i++){
+  if (bigData[i].gender == 'Male'){
+    men++;
+  }else {
+    women++;
+  }
+}
+
+var value = men / women;
+
+/* Функциональный вариант */
 function propEq(prop, value) {
   return function (data) {
     return data[prop] === value;
@@ -70,9 +100,37 @@ var women = bigData.filter(propEq('gender', 'Female')).length;
 var men = bigData.filter(propEq('gender', 'Male')).length;
 var value = men / women;
 
-/* Length */
+/* Посчитать количество людей в имени которых больше n букв */
+
 function countNLettersInName(n, type) {
   return bigData.filter(function (user) {
     return user.name[type || 'first'].length > n;
   }).length;
+}
+
+/* Есть ли кто-нибудь у кого в имену больше 4-х согласных подряд */
+function cons(x) {
+  var CONSONANTS = 'qwrtpsdfghjklzxcvbnm';
+
+  var result = bigData.filter(function (user) {
+    var name = user.fullName().toLowerCase();
+    var conses = 0;
+
+    [].reduce.call(name, function (sum, letter) {
+      var isLetterConsonant = ~CONSONANTS.indexOf(letter);
+      if (isLetterConsonant){
+        sum++;
+        if (conses <= sum){
+          conses = sum;
+        }
+      } else {
+        sum = 0;
+      }
+      return sum;
+    }, 0);
+
+    return conses >= x;
+  });
+
+  return result[0] ? result[0].fullName() : false;
 }

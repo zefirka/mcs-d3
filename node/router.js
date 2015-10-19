@@ -27,38 +27,48 @@ function putComplete(day, lesson, complete) {
   }
 }
 
+function script(src) {
+  return '<script type="text/javascript" src="' + src + '"></script>';
+}
+
+function link(href) {
+  return '<link rel="stylesheet" type="text/css" href="' + href + '">';
+}
+
 function interpolate(html, day, lesson, complete) {
   //jscs:disable maximumLineLength
-  var css = '<link rel="stylesheet" type="text/css" href="/static/css/main.css">';
-  var js = '<script type="text/javascript" src="/static/js/main.js"></script>';
+  var css = link('/static/css/main.css');
   var btns = '';
   var fname = lesson;
 
+  var js = [
+    script('/static/js/d3.js'),
+    script('https://code.jquery.com/jquery-1.11.3.js'),
+    script('/static/js/main.js')].join('\n');
+
   if (day){
-    css += '\n<link rel="stylesheet" type="text/css" href="/static/css/days/' + day + '/style.css">';
-    js += '\n<script type="text/javascript" src="/static/js/days/' + day + '/main.js"></script>';
+    css += link('/static/css/days/' + day + '/style.css');
+    js += script('/static/js/days/' + day + '/main.js');
   }
 
   if (lesson){
-    css += '\n<link rel="stylesheet" type="text/css" href="/static/css/days/' + day + '/lessons/' +
-      (complete ? (lesson + '.complete') : lesson) +
-    '.css">';
-    js += '\n<script type="text/javascript" src="/static/js/days/' + day + '/lessons/' +
-      (complete ? (lesson + '.complete') : lesson) +
-    '.js"></script>';
+    css += link('/static/css/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.css');
+    js += script('/static/js/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.js');
   }
 
   if (day && !lesson){
     btn = '' +
-      '<footer>' +
+      '<aside>' +
+        '<span class="b-icon_aside"></span>' +
         '<div class="b-inner">' +
           '<div><a href="/">На главную</a></div>' +
         '</div>' +
-      '</footer>';
+      '</aside>';
   }else {
     if (lesson > 1){
       btn = '' +
-        '<footer>' +
+        '<aside>' +
+          '<span class="b-icon_aside"></span>' +
           '<div class="b-inner">' +
             '<div>' +
               '<a href="/day/' + day + '/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
@@ -66,22 +76,25 @@ function interpolate(html, day, lesson, complete) {
             '</div>' +
             putComplete(day, lesson, complete) +
             '<div>' +
+              '<div><a href="/day/' + day + '">К списку уроков</a></div>' +
               '<div><a href="/">На главную</a></div>' +
             '</div>' +
-        '</footer>';
+        '</aside>';
     }else {
       btn = '' +
-        '<footer>' +
+        '<aside>' +
+          '<span class="b-icon_aside"></span>' +
           '<div class="b-inner">' +
             '<div>' +
               '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
             '</div>' +
             putComplete(day, lesson, complete) +
             '<div>' +
+              '<div><a href="/day/' + day + '">К списку уроков</a></div>' +
               '<a href="/">На главную</a>' +
             '</div>' +
           '</div>' +
-        '</footer>';
+        '</aside>';
     }
   }
 

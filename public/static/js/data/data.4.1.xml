@@ -1,0 +1,47 @@
+<persons count="5">
+    <person id="1">
+        <name>
+            <first>John</first>
+            <second>Doe</second>
+        </name>
+        <age>23</age>
+        <gender>m</gender>
+        <email>john_doe@aol.com</email>
+    </person>
+    <person id="2">
+        <name>
+            <first>Kate</first>
+            <second>Hills</second>
+        </name>
+        <age>22</age>
+        <gender>f</gender>
+        <email>kth.zoo@zorgnax.org</email>
+    </person>
+    <person id="3">
+        <name>
+            <first>Jane</first>
+            <second>Arc</second>
+        </name>
+        <age>33</age>
+        <gender>f</gender>
+        <email>jane.arc@lib.er</email>
+    </person>
+    <person id="4">
+        <name>
+            <first>James</first>
+            <second>Dalton</second>
+        </name>
+        <age>41</age>
+        <gender>m</gender>
+        <email>frg.daltom@dalton.org</email>
+    </person>
+    <person id="5">
+        <name>
+            <first>Rene</first>
+            <second>Dekart</second>
+        </name>
+        <age>38</age>
+        <gender>m</gender>
+        <email>decartuex@oldage.com</email>
+    </person>
+</persons>

@@ -4,6 +4,9 @@ function generateUser(firendLess) {
       first: chance.first(),
       last: chance.last()
     },
+    fullName: function(){
+      return this.name.first + ' ' + this.name.last;
+    },
     age: chance.age(),
     gender: chance.gender(),
     website: chance.domain(),

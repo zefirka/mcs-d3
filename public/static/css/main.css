@@ -29,13 +29,40 @@ body{
 	margin: 0 auto;
 }
 
-footer{
+aside{
 	position: fixed;
-	width: 110px;
-	padding: 10px;
+	width: 120px;
 	padding-right: 0;
-	height: 65px;
-	background: rgba(100, 100, 20, 0.3);
-	bottom: 0;
+	height: 80px;
+	top: 0;
 	right: 0;
+}
+
+aside .b-icon_aside{
+	display: block;
+	width: 12px;
+	height: 12px;
+	background: #6D0C0C;
+	top: 5px;
+	right: 5px;
+	position: absolute;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+aside.active .b-icon_aside{
+	background: #226D0C;
+}
+
+aside .b-inner{
+	transition: all 0.1s ease;
+	background: rgba(100, 100, 20, 0.3);
+	padding: 10px;
+	opacity: 0;
+	font-size: 12px;
+}
+
+aside:hover .b-inner,
+aside.active .b-inner{
+	opacity: 1;
 }
