@@ -5,6 +5,11 @@ var express = require('./node/app');
 
 var App = express();
 
+process.argv.forEach(function (arg, i) {
+  if (i === 2){
+    config.port = Number(arg);
+  }
+});
 
 var server = App.listen(config.port, function () {
   var host = server.address().address,

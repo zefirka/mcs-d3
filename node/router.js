@@ -1,111 +1,11 @@
-var fs   = require('fs');
-var join   = require('path').join,
-    config = require('./config');
+var fs          = require('fs');
+var join        = require('path').join,
+    config      = require('./config'),
+    utils       = require('./utils'),
+    htmlModule  = require('./html');
 
-var completes = require('./lessons.json').hasCompleted;
-
-function nextLesson(day) {
-  return '' +
-    '<link rel="stylesheet" type="text/css" href="/static/css/main.css">' +
-    '<div class="b-inner">' +
-      '<div>На этом все.</div>' +
-      '<div><a href="/day/' + day + '">Назад</a>' +
-      '<div><a href="/">В начало</a>' +
-    '</div>';
-}
-
-function putComplete(day, lesson, complete) {
-  if (~completes[day].indexOf(Number(lesson))){
-    return '' +
-      '<div>' +
-        (!complete ?
-          ('<a href="/day/' + day + '/' + lesson + '/complete">Решение</a>') :
-          ('<a href="/day/' + day + '/' + lesson + '">К уроку</a>')) +
-      '</div>';
-  }else {
-    return '';
-  }
-}
-
-function script(src) {
-  return '<script type="text/javascript" src="' + src + '"></script>';
-}
-
-function link(href) {
-  return '<link rel="stylesheet" type="text/css" href="' + href + '">';
-}
-
-function interpolate(html, day, lesson, complete) {
-  //jscs:disable maximumLineLength
-  var css = link('/static/css/main.css');
-  var btns = '';
-  var fname = lesson;
-
-  var js = [
-    script('/static/js/d3.js'),
-    script('https://code.jquery.com/jquery-1.11.3.js'),
-    script('/static/js/main.js')].join('\n');
-
-  if (day){
-    css += link('/static/css/days/' + day + '/style.css');
-    js += script('/static/js/days/' + day + '/main.js');
-  }
-
-  if (lesson && lesson !== 'links'){
-    css += link('/static/css/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.css');
-    js += script('/static/js/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.js');
-  }
-
-  if (day && !lesson){
-    btn = '' +
-      '<aside>' +
-        '<span class="b-icon_aside"></span>' +
-        '<div class="b-inner">' +
-          '<div><a href="/">На главную</a></div>' +
-        '</div>' +
-      '</aside>';
-  }else {
-    if (lesson > 1){
-      btn = '' +
-        '<aside>' +
-          '<span class="b-icon_aside"></span>' +
-          '<div class="b-inner">' +
-            '<div>' +
-              '<a href="/day/' + day + '/' + (Number(lesson) - 1) + '/">Prev</a>&nbsp;' +
-              '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
-            '</div>' +
-            putComplete(day, lesson, complete) +
-            '<div>' +
-              '<div><a href="/day/' + day + '">К списку уроков</a></div>' +
-              '<div><a href="/">На главную</a></div>' +
-            '</div>' +
-        '</aside>';
-    }else {
-      btn = '' +
-        '<aside>' +
-          '<span class="b-icon_aside"></span>' +
-          '<div class="b-inner">' +
-            '<div>' +
-              '<a href="/day/' + day + '/' + (Number(lesson) + 1) + '/">Next</a>' +
-            '</div>' +
-            putComplete(day, lesson, complete) +
-            '<div>' +
-              '<div><a href="/day/' + day + '">К списку уроков</a></div>' +
-              '<a href="/">На главную</a>' +
-            '</div>' +
-          '</div>' +
-        '</aside>';
-    }
-  }
-
-  if (lesson === 'links'){
-    btn = '';
-  }
-  //jscs:enable maximumLineLength
-  return html .replace('</title>', '</title>' + css)
-              .replace('</body>', btn + '</body>')
-              .replace('</body>', js + '</body>');
-}
+var HTML = htmlModule.HTML;
+var nextLesson = HTML.nextLesson;
 
 function isFileExist(url, yes, no) {
   return fs.stat(url, function (err) {
@@ -143,7 +43,7 @@ function response(fileAddr, day, lesson, complete) {
         encoding: 'utf-8'
       });
 
-      file = interpolate(file, day, lesson, complete);
+      file = HTML(file, day, lesson, complete);
 
       res.send(file);
       next();
@@ -154,8 +54,8 @@ function response(fileAddr, day, lesson, complete) {
   };
 }
 
+/* Routes */
 module.exports = function (app) {
-
   app.get('/', function (req, res) {
     var file = join(config.views, 'index.html');
     res.sendFile(file);
@@ -167,7 +67,7 @@ module.exports = function (app) {
       encoding: 'utf-8'
     });
 
-    file = interpolate(file, day);
+    file = HTML(file, day);
 
     res.send(file);
     next();
