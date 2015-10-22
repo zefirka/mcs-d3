@@ -389,7 +389,8 @@ function onLegendHideButtonClick(d) {
   d3.select(this)
     .transition()
     .duration(100)
-    .attr('transform', hidden ? rotate(-45) : rotate(0));
+    .attr('transform', hidden ? rotate(-45) : rotate(0))
+    .attr('class', !hidden ? 'remove remove_hidden' : 'remove');
 
   d3.selectAll('.bar[data-genre="' + genre + '"]')
     .attr('display', hidden ? 'block' : 'none')

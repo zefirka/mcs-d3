@@ -1,16 +1,3 @@
-.yAxis path,
-.yAxis line,
-.xAxis path,
-.xAxis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: geometricPrecision;
-}
-
-.yAxis text{
-	font:10px sans-serif;
-}
-
-.xAxis text{
-	font:14px sans-serif;
+text{
+	font: 12px sans-serif;
 }

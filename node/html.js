@@ -73,7 +73,7 @@ function nextLesson(day) {
     _div(
       content(_div, [
         'На этом все',
-        _a(src, 'Назад'),
+        _a('/day/' + day, 'Назад'),
         _a('/', 'В начало')
       ]), 'b-inner');
 }

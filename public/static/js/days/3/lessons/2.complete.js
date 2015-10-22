@@ -1,50 +1,55 @@
-var LIMIT = 20;
-var PADDING = 5;
-var BAR_WIDTH = 30;
-var MIN_TEXT_LENGTH = 100;
-
-/* Получаем данные */
-$.ajax({
-  method: 'GET',
-  url: 'story.txt', // тарас бульба
-  dataType: 'text',
-  success: draw, // <- Вот эта функция вызывается, если все ок.
-  error: alert
-});
+var BIG_DATA = [16, 23, 42, 100, 20, 77, 22, 2];
+var WIDTH = $(window).width();
+var BAR = {
+  width: 30,
+  padding: 5
+};
 
 /*
- * Функция, которая отрисовывает гистограмму
- * Принимает на вход текст - длинную строку :)
+ * Цель урока - перевести визуализацию из предыдущего занятия с HTML в SVG
  */
-function draw(text) {
-  var words = parse(text);
 
-  var maxWidth = d3.max(words, prop('count'));
+/* Создаем шкалу, чтобы не мучаться с расчетем ширины столбцов */
+var x = d3.scale.linear()
+    .domain([0, d3.max(BIG_DATA)])
+    .range([0, WIDTH]);
 
-  var chart = d3
-    .select('.chart')
-    .attr('height', words.length * (BAR_WIDTH + PADDING))
-    .attr('width', maxWidth + MIN_TEXT_LENGTH);
+var chart = d3.select('.chart')
+  .attr('width', WIDTH)
+  .attr('height', BIG_DATA.length * (BAR.width + BAR.padding));
 
-  var groups = chart
-    .selectAll('g')
-      .data(words).enter()
-    .append('g')
-    .attr('transform', function (d, i) {
-      return 'translate(0,' + i * (BAR_WIDTH + PADDING) + ')';
-    });
+var bars = chart
+  .selectAll('rect')
+    .data(BIG_DATA).enter()
+  .append('rect')
+  .attr('class', 'bar')
+  .attr('x', 0)
+  .attr('y', function (d, i) {
+    return (BAR.width + BAR.padding) * i;
+  })
+  .attr('width', function (d) {
+    return x(d);
+  })
+  .attr('height', BAR.width)
+  .attr('fill', 'red');
 
-  var bars = groups.append('rect')
-    .attr('width', prop('count'))
-    .attr('height', BAR_WIDTH);
+var texts = chart
+  .selectAll('text')
+    .data(BIG_DATA).enter()
+  .append('text')
+  .attr('x', 0)
+  .attr('y', function (d, i) {
+    return (BAR.width + BAR.padding) * i + BAR.width / 2;
+  })
+  .text(function (d) {
+    return d;
+  });
 
-  var legends = groups.append('text')
-    .attr('x', function (d) {
-      return (d.count + 10) + 'px';
-    })
-    .attr('y', BAR_WIDTH / 2)
-    .attr('dy', '.35em')
-    .text(function (d) {
-      return d.word + ' (' + d.count + ')';
-    });
-}
+$(window).resize(function () {
+  var width = $(this).width();
+  x.range([0, width]);
+  chart.attr('width', width);
+  bars.attr('width', function (d) {
+    return x(d);
+  });
+});

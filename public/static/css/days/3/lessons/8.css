@@ -1,0 +1,44 @@
+text {
+	font: 10px sans-serif;
+}
+
+.axis path,
+.axis line{
+	fill: none;
+	stroke: black;
+}
+
+.line{
+	fill: none;
+	stroke: blue;
+	stroke-width: 2px;
+}
+
+.tick text{
+	font: 10px sans-serif;
+}
+
+.tick line{
+	opacity: 0.2;
+}
+
+.legend-item,
+.remove {
+	cursor: pointer;
+}
+
+.remove{
+	font-size: 20px;
+	fill: red;
+}
+
+.remove.remove_hidden{
+	font-size: 20px;
+	fill: green;
+}
+
+.popup{
+	fill: white;
+	stroke: black;
+	stroke-width: 2px;
+}

@@ -4,7 +4,7 @@ function config(locale) {
   }
 
   return {
-    title: 'D3',
+    title: 'Визуализация данных с помощью D3.js',
     root: rooty(''),
     public: rooty('public'),
     views: rooty('public/view'),

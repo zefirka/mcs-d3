@@ -5,7 +5,7 @@ var join        = require('path').join,
     htmlModule  = require('./html');
 
 var HTML = htmlModule.HTML;
-var nextLesson = HTML.nextLesson;
+var nextLesson = htmlModule.nextLesson;
 
 function isFileExist(url, yes, no) {
   return fs.stat(url, function (err) {
@@ -76,7 +76,7 @@ module.exports = function (app) {
   app.get('/day/:day/:lesson/complete', onLesson(true));
   app.get('/day/:day/:lesson', onLesson(false));
 
-  app.get('/day/:day/:lesson/*.(css|png|js|jpg|gif|webm|txt|cvs|xsl)', function (req, res, next) {
+  app.get('/day/:day/:lesson/*.*', function (req, res, next) {
     var file = req.url.split('/').pop();
     var day = req.params.day;
     var url = join(config.views, 'days', day, 'lessons', file);

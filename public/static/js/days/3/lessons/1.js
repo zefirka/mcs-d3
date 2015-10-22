@@ -1,10 +1,16 @@
-var BIG_DATA = [16, 23, 42, 100, 20, 77, 22, 2];
-var WIDTH = $(window).width();
-var BAR = {
-  width: 30,
-  padding: 5
-};
+var firstList = d3.select('ul');
+var secondList = d3.select(d3.selectAll('ul')[0].pop());
 
-/*
- * Цель урока - перевести визуализацию из предыдущего занятия с HTML в SVG
- */
+// firstList
+// 	.append('div')
+//   .html('Новый элемент');
+
+// secondList
+//   .selectAll('span')
+//     .data([0,1,2,3]).enter()
+//   .append('span')
+//   .style('background-color', '#eee')
+//   .style('margin-right', '5px')
+//   .html(function (dataItem, index) {
+//     return index;
+//   });

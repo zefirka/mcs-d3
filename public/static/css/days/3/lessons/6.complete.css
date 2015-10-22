@@ -1,0 +1,7 @@
+.arc path:hover {
+  stroke: #000;
+}
+
+.arc text{
+	font: 12px "Helvetica Neue"; 
+}
