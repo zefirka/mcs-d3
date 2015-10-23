@@ -10,7 +10,12 @@ function generateUser(firendLess) {
     age: chance.age(),
     gender: chance.gender(),
     website: chance.domain(),
+    address: {
+      city: chance.city(),
+      street: chance.street()
+    },
     email: chance.email(),
+    twitter: chance.twitter(),
     friends: firendLess ? [] : [generateUser(true), generateUser(true)]
   };
 }

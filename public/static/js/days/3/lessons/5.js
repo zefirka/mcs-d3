@@ -1,4 +1,16 @@
 var LIMIT = 20;
+var MARGINS = {
+  top: 20,
+  right: 20,
+  bottom: 30,
+  left: 40
+};
+
+var SIZES = {
+  bar: 50,
+  width: 1024 - MARGINS.left - MARGINS.right,
+  height: 500 - MARGINS.top - MARGINS.bottom
+};
 
 var exeptions = [
   /^сво((и[хм])|(его)|(ей)|й)$/,
@@ -35,19 +47,6 @@ $.ajax({
 
 var getCount = prop('count');
 var getWord = prop('word');
-
-var MARGINS = {
-  top: 20,
-  right: 20,
-  bottom: 30,
-  left: 40
-};
-
-var SIZES = {
-  bar: 50,
-  width: 1024 - MARGINS.left - MARGINS.right,
-  height: 500 - MARGINS.top - MARGINS.bottom
-};
 
 /* Шкалы */
 var x = d3.scale.ordinal();
