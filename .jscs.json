@@ -11,6 +11,7 @@
         "tasks/**",
         "public/static/js/d3.js",
         "./public/static/js/lib/*",
+        "./public/static/libs/**/*",
         "./public/static/js/data/*",
         "./node/lessons.json"
     ]

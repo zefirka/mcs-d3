@@ -14,5 +14,6 @@
   "evil": true,
   "quotmark": "single",
   "trailing": true,
-  "-W058": false
+  "-W058": false,
+  "node": true
 }

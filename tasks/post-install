@@ -2,3 +2,7 @@ echo "Starting post-install script"
 
 ln -fs $(pwd)/tasks/pre-commit $(pwd)/.git/hooks/pre-commit
 chmod 777 $(pwd)/tasks/*
+
+node $(pwd)/tasks/make-frontend-libs.js
+cat deps | xargs -J % cp -r % public/static/libs
+rm deps

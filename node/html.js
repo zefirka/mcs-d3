@@ -92,8 +92,8 @@ function HTML(html, day, lesson, complete) {
   ]);
 
   var js = content(script, [
-    '/static/js/d3.js',
-    'https://code.jquery.com/jquery-1.11.3.js',
+    '/static/libs/d3/d3.js',
+    '/static/libs/jquery/dist/jquery.js',
     '/static/js/main.js',
 
       day ?

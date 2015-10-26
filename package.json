@@ -1,7 +1,7 @@
 {
-  "name": "mcs-d3-boilerplate",
-  "version": "1.0.0",
-  "description": "Boilerplate for Moscow Coding School D3JS Course",
+  "name": "mcs-d3",
+  "version": "1.1.0",
+  "description": "Site for Moscow Coding School D3.js Course",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,15 +12,17 @@
   "author": "Trdat Mkrtchyan",
   "license": "MIT",
   "devDependencies": {
-    "supervisor": "^0.7.1"
+    "supervisor": "^0.7.1",
+    "jscs": "^2.1.0",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.0.1"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
     "request": "^2.64.0",
     "d3": "latest",
-    "jscs": "^2.1.0",
-    "jshint": "^2.8.0",
-    "jshint-stylish": "^2.0.1"
-  }
+    "jquery": "^1.11.3"
+  },
+  "frontend": ["d3", "jquery"]
 }
