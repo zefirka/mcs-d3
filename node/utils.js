@@ -1,15 +1,21 @@
+/// {Object} -> {Array}
 function toArray(a) {
+  a.length = a.length || Object.keys(a).length;
   return [].slice.call(a);
 }
 
+/// {Mixed} -> {Boolean}
 function isTrueObject(o) {
   return typeof o === 'object' && !Array.isArray(o);
 }
 
+/// {Mixed} -> {Boolean}
 function isExist(o) {
   return typeof o !== 'undefined' && o !== null;
 }
 
+/// {String, Object} -> {String}
+/// {String, {...}} -> {String}
 function interpolate(str) {
   var data = {},
       argc = arguments.length,
@@ -34,6 +40,7 @@ function interpolate(str) {
   });
 }
 
+/// {Object, String} -> {Mixed}
 function result(o, str) {
   return str.split('.').reduce(function (sum, prop) {
     if (~prop.indexOf('[')){

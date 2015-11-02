@@ -7,13 +7,16 @@ var join        = require('path').join,
 var HTML = htmlModule.HTML;
 var nextLesson = htmlModule.nextLesson;
 
+/// {String, Function, Function} -> {Void}
 function isFileExist(url, yes, no) {
   return fs.stat(url, function (err) {
     return err ? no() : yes();
   });
 }
 
+/// {Boolean} -> {Function}
 function onLesson(complete) {
+  /// {Object, Object, Object} -> {Void}
   return function (req, res, next) {
     var day = req.params.day;
     var lesson = req.params.lesson;
@@ -36,7 +39,9 @@ function onLesson(complete) {
   };
 }
 
+/// {String, String|Number, String|Number, Boolean} -> {Function}
 function response(fileAddr, day, lesson, complete) {
+  /// {Object, Object, Object} -> {Void}
   return function (req, res, next) {
     isFileExist(fileAddr, function () {
       var file = fs.readFileSync(fileAddr, {
@@ -55,6 +60,7 @@ function response(fileAddr, day, lesson, complete) {
 }
 
 /* Routes */
+/// {Object} -> {Void}
 module.exports = function (app) {
   app.get('/', function (req, res) {
     var file = join(config.views, 'index.html');

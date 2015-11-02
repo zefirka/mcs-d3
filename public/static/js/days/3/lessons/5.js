@@ -8,8 +8,8 @@ var MARGINS = {
 
 var SIZES = {
   bar: 50,
-  width: 1024 - MARGINS.left - MARGINS.right,
-  height: 500 - MARGINS.top - MARGINS.bottom
+  width: 1280 - MARGINS.left - MARGINS.right,
+  height: 800 - MARGINS.top - MARGINS.bottom
 };
 
 var exeptions = [
@@ -34,7 +34,7 @@ var equals = [
   {reg: /^земл*/, to: 'земля'},
   {reg: /^голов*/, to: 'голова'},
   {reg: /^((страх*)|(ужас*))/, to: 'страх'},
-  {reg: /^безуми*/, to: 'безумие'}
+  {reg: /^безуми*/, to: 'безумие'},
 ];
 
 $.ajax({
