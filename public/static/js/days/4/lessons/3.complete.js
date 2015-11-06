@@ -146,3 +146,4 @@ function merge() {
     return Object.assign(sum, object);
   });
 }
+

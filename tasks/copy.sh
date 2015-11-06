@@ -1,2 +1,3 @@
-cp -r node_modules/d3/ public/static/libs
-cp -r node_modules/jquery/ public/static/libs
+mkdir ./public/static/libs/
+mv ./node_modules/d3/ ./public/static/libs/
+mv ./node_modules/jquery/ ./public/static/libs/
