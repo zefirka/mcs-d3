@@ -4,6 +4,7 @@ svg
   .attr('width', 500)
   .attr('height', 500);
 
+/* Width transition */
 svg
   .append('rect')
   .attr('x', 5)
@@ -15,6 +16,7 @@ svg
   .duration(1000)
   .attr('width', 300);
 
+/* Fill transition */
 svg
   .append('rect')
   .attr('x', 5)

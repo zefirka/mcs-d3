@@ -1,8 +1,5 @@
-echo "Starting post-install script"
-
 ln -fs $(pwd)/tasks/pre-commit $(pwd)/.git/hooks/pre-commit
-chmod 777 $(pwd)/tasks/*
+chmod 777 tasks/*
 
-node $(pwd)/tasks/make-frontend-libs.js
-cat deps | xargs -J % cp -r % public/static/libs
-rm deps
+cp -r node_modules/d3/ public/static/libs
+cp -r node_modules/jquery/ public/static/libs
