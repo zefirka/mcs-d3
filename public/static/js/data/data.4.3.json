@@ -1,73 +1,71 @@
 {
     "LSD" : {
-        "PS" : [56, 73],
-        "PH" : [11, 17],
-        "RR" : [12, 20],
-        "ST" : [3, 12],
-        "AI" : [2, 28] 
+        "Mental disorders" : 68,
+        "Physical disorders" : 17,
+        "Addiction level" : 14,
+        "Availibility level" : 20
     },
 
     "Heroin" : {
-        "PS" : [18, 30],
-        "PH" : [68, 77],
-        "RR" : [50, 60],
-        "ST" : [82, 97],
-        "AI" : [9, 44]
+        "Mental disorders" : 21,
+        "Physical disorders" : 79,
+        "Addiction level" : 91,
+        "Availibility level" : 44
     },
 
     "Marijuana" : {
-        "PS" : [18, 27],
-        "PH" : [20, 30],
-        "RR" : [81, 87],
-        "ST" : [16, 80],
-        "AI" : [38, 77]
+        "Mental disorders" : 21,
+        "Physical disorders" : 14,
+        "Addiction level" : 39,
+        "Availibility level" : 78
     },
 
     "Barbiturates" : {
-        "PS" : [25, 41],
-        "PH" : [21, 66],
-        "RR" : [12, 54],
-        "ST" : [41, 82],
-        "AI" : [68, 93]
+        "Mental disorders" : 38,
+        "Physical disorders" : 55,
+        "Addiction level" : 69,
+        "Availibility level" : 81
     },
 
     "Amphetamine" : {
-        "PS" : [63, 71],
-        "PH" : [70, 82],
-        "RR" : [48, 56],
-        "ST" : [28, 77],
-        "AI" : [19, 44]
+        "Mental disorders" : 68,
+        "Physical disorders" : 66,
+        "Addiction level" : 57,
+        "Availibility level" : 40
     },
 
     "MDMA" : {
-        "PS" : [43, 66],
-        "PH" : [38, 55],
-        "RR" : [41, 55],
-        "ST" : [34, 67],
-        "AI" : [33, 55]
+        "Mental disorders" : 52,
+        "Physical disorders" : 39,
+        "Addiction level" : [34, 67],
+        "Availibility level" : [33, 55]
+    },
+
+    "Methamphetaine" : {
+        "Mental disorders" : 78,
+        "Physical disorders" : 67,
+        "Addiction level" : 72,
+        "Availibility level" : 48
     },
 
     "Cocaine" : {
-        "PS" : [21, 44],
-        "PH" : [42, 69],
-        "RR" : [58, 77],
-        "ST" : [61, 89],
-        "AI" : [22, 68]
+        "Mental disorders" : 39,
+        "Physical disorders" : 60,
+        "Addiction level" : 82,
+        "Availibility level" : 52
     },
 
     "Alcohol" : {
-        "PS" : [28, 44],
-        "PH" : [42, 88],
-        "RR" : [77, 93],
-        "ST" : [18, 94],
-        "AI" : [89, 100]
+        "Mental disorders" : 44,
+        "Physical disorders" : 69,
+        "Addiction level" : 79,
+        "Availibility level" : 98
     },
 
     "Nicotine" : {
-        "PS" : [8, 13],
-        "PH" : [27, 67],
-        "RR" : [7, 93],
-        "ST" : [71, 99],
-        "AI" : [99, 100]
+        "Mental disorders" : 2,
+        "Physical disorders" : 58,
+        "Addiction level" : 88,
+        "Availibility level" : 100
     }
 }

@@ -23,7 +23,8 @@
     "express": "^4.13.3",
     "jquery": "^1.11.3",
     "querystring": "^0.2.0",
-    "request": "^2.64.0"
+    "request": "^2.64.0",
+    "colors": "latest"
   },
   "frontend": [
     "d3",

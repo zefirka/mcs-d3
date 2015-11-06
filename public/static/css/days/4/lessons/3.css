@@ -21,11 +21,10 @@
 .item{
 	stroke-width: 2px;
 	stroke: black;
-	fill-opacity: 0.4;
 }
 
 .item:hover{
-	fill-opacity: 0.8;
+	fill-opacity: 0.6;
 }
 .LSD{
 	fill: green;
