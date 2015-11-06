@@ -13,6 +13,9 @@
         "./public/static/js/lib/*",
         "./public/static/libs/**/*",
         "./public/static/js/data/*",
-        "./node/lessons.json"
+        "./node/lessons.json",
+        "public/static/libs/**/*",
+        "public/static/libs/d3/**/*",
+        "public/static/libs/jquery/**/*"
     ]
 }
