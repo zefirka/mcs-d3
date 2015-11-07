@@ -59,12 +59,12 @@ function content(fn, arr) {
   }).join('');
 }
 
-function putComplete(day, lesson, complete, completes) {
+function putComplete(day, lesson, postFix, completes) {
   var hasCompleted = ~completes[day].indexOf(Number(lesson));
 
   return hasCompleted ? (
-    _div(!complete ?
-      _a('/day/' + day + '/' + lesson + '/complete', 'Решение') :
+    _div(!postFix ?
+      _a('/day/' + day + '/' + lesson + '/' + postFix, 'Решение') :
       _a('/day/' + day + '/' + lesson, 'К уроку'))) : '';
 }
 
@@ -78,7 +78,8 @@ function nextLesson(day) {
       ]), 'b-inner');
 }
 
-function HTML(html, day, lesson, complete) {
+function HTML(html, day, lesson, postFix) {
+  console.log(postFix);
   //jscs:disable maximumLineLength
   var css = content(link, [
     '/static/css/main.css',
@@ -87,7 +88,7 @@ function HTML(html, day, lesson, complete) {
       : null,
 
       lesson && lesson !== 'links' ?
-    '/static/css/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.css'
+    '/static/css/days/' + day + '/lessons/' + (postFix ? (lesson + '.' + postFix) : lesson) + '.css'
       : null
   ]);
 
@@ -101,7 +102,7 @@ function HTML(html, day, lesson, complete) {
       : null,
 
       lesson && lesson !== 'links' ?
-    '/static/js/days/' + day + '/lessons/' + (complete ? (lesson + '.complete') : lesson) + '.js'
+    '/static/js/days/' + day + '/lessons/' + (postFix ? (lesson + '.' + postFix) : lesson) + '.js'
       : null
   ]);
 
@@ -122,7 +123,7 @@ function HTML(html, day, lesson, complete) {
       ]
     }),
 
-    putComplete(day, lesson, complete, completes),
+    putComplete(day, lesson, postFix, completes),
 
     _el({
       tag: 'div',

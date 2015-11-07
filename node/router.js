@@ -15,7 +15,7 @@ function isFileExist(url, yes, no) {
 }
 
 /// {Boolean} -> {Function}
-function onLesson(complete) {
+function onLesson(postFix) {
   /// {Object, Object, Object} -> {Void}
   return function (req, res, next) {
     var day = req.params.day;
@@ -26,21 +26,21 @@ function onLesson(complete) {
       fileAddr = join(config.views, 'days', day, 'links.html');
     }
 
-    if (complete){
-      var testFile = join(config.views, 'days', day, 'lessons', lesson + '.complete.html');
+    if (postFix){
+      var testFile = join(config.views, 'days', day, 'lessons', lesson + '.' + postFix + '.html');
       isFileExist(testFile, function () {
-        response(testFile, day, lesson, complete)(req, res, next);
+        response(testFile, day, lesson, postFix)(req, res, next);
       }, function () {
-        response(fileAddr, day, lesson, complete)(req, res, next);
+        response(fileAddr, day, lesson, postFix)(req, res, next);
       });
     }else {
-      response(fileAddr, day, lesson, complete)(req, res, next);
+      response(fileAddr, day, lesson, postFix)(req, res, next);
     }
   };
 }
 
-/// {String, String|Number, String|Number, Boolean} -> {Function}
-function response(fileAddr, day, lesson, complete) {
+/// {String, String|Number, String|Number, String} -> {Function}
+function response(fileAddr, day, lesson, postFix) {
   /// {Object, Object, Object} -> {Void}
   return function (req, res, next) {
     isFileExist(fileAddr, function () {
@@ -48,7 +48,7 @@ function response(fileAddr, day, lesson, complete) {
         encoding: 'utf-8'
       });
 
-      file = HTML(file, day, lesson, complete);
+      file = HTML(file, day, lesson, postFix);
 
       res.send(file);
       next();
@@ -79,8 +79,9 @@ module.exports = function (app) {
     next();
   });
 
-  app.get('/day/:day/:lesson/complete', onLesson(true));
-  app.get('/day/:day/:lesson', onLesson(false));
+  app.get('/day/:day/:lesson/complete', onLesson('complete'));
+  app.get('/day/:day/:lesson/my', onLesson('my'));
+  app.get('/day/:day/:lesson', onLesson(''));
 
   app.get('/day/:day/:lesson/*.*', function (req, res, next) {
     var file = req.url.split('/').pop();
