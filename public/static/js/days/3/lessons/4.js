@@ -14,7 +14,6 @@ var yAxis = d3.svg.axis()
 
 /***************************************/
 /*  Рисование оси вдоль линейной шкалы */
-
 var linearAxisElement = d3.select('.chart-linear')
     .attr('height', HEIGHT)
     .attr('width', WIDTH)
@@ -36,33 +35,30 @@ var axisElement = d3.select('.chart-linear-customized')
     .style('text-anchor', 'end')
     .text('Legend');
 
+WIDTH = 400;
+HEIGHT = 100;
+
 /* Порядковая шкала */
 var x = d3.scale.ordinal()
   .domain(['Sovse maly', 'Maly', 'Norm', 'Bolsho', 'Oche bolsho'])
-  .rangePoints([0, HEIGHT]);
+  .rangePoints([0, WIDTH]);
 
 /* Горизонтальная ось */
 var xAxis = d3.svg.axis()
-  .scale(y)
+  .scale(x)
   .orient('bottom');
 
 var axisElement = d3.select('.chart-ordinal')
-    .attr('height', WIDTH)
-    .attr('width', HEIGHT)
+    .attr('height', HEIGHT)
+    .attr('width', WIDTH + 80)
   .append('g')
-    .attr('transform', 'translate(20, 5)')
+    .attr('transform', 'translate(40, 40)')
     .call(xAxis);
 
 var axisElement = d3.select('.chart-ordinal-customized')
-    .attr('height', WIDTH)
-    .attr('width', HEIGHT)
+    .attr('height', HEIGHT)
+    .attr('width', WIDTH + 80)
   .append('g')
-    .attr('transform', 'translate(20, 5)')
+    .attr('transform', 'translate(40, 5)')
     .attr('class', 'xAxis')
-    .call(xAxis)
-  .append('text')
-    .attr('y', 40)
-    .attr('dy', 5)
-    .style('text-anchor', 'start')
-    .text('Legend');
-
+    .call(xAxis);

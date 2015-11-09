@@ -16,12 +16,6 @@ function FORMULA(x) {
   return Math.sin(2 * x) * x * x ;
 }
 
-function prop(name) {
-  return function (data) {
-    return data[name];
-  };
-}
-
 var MARGIN = {
   top: 20,
   right: 20,

@@ -23,13 +23,6 @@ function unique(sum, item) {
   return sum;
 }
 
-/* Генератор геттера по названию ключа */
-function prop(x) {
-  return function (d) {
-    return d[x];
-  };
-}
-
 function rotate(deg) {
   return function () {
     var x = Number(d3.select(this).attr('x'));// + 4.1;

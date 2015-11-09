@@ -61,10 +61,9 @@ function content(fn, arr) {
 
 function putComplete(day, lesson, postFix, completes) {
   var hasCompleted = ~completes[day].indexOf(Number(lesson));
-
   return hasCompleted ? (
     _div(!postFix ?
-      _a('/day/' + day + '/' + lesson + '/' + postFix, 'Решение') :
+      _a('/day/' + day + '/' + lesson + '/complete', 'Решение') :
       _a('/day/' + day + '/' + lesson, 'К уроку'))) : '';
 }
 

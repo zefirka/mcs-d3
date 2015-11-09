@@ -2,13 +2,13 @@ var LIMIT = 20;
 var PADDING = 5;
 var BAR_WIDTH = 30;
 
-/* Получаем данные */
+/* Получаем данные с помощью jQuery-метода ajax*/
 $.ajax({
-  method: 'GET',
-  url: 'story.txt', // тарас бульба
-  dataType: 'text',
+  method: 'GET', // метод запроса (не берите в голову)
+  url: 'lovecraft.txt', // Хребты Безумия Говарда Лавкрафта (это путь где лежит файл)
+  dataType: 'text', // тип данных - это текст
   success: draw, // <- Вот эта функция вызывается, если все ок.
-  error: alert // <- Вот эта функция вызывается, если все данные не полученны
+  error: alert // <- Вот эта функция вызывается, если данные не полученны
 });
 
 /*
@@ -16,7 +16,7 @@ $.ajax({
  * Принимает на вход текст - длинную строку :)
  */
 function draw(text) {
-  var words = parse(text);
-
+  var words = parse(text); // <- это массив слов из текста
+  console.log(words);
   //
 }

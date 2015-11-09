@@ -6,11 +6,18 @@ var MIN_TEXT_LENGTH = 100;
 /* Получаем данные */
 $.ajax({
   method: 'GET',
-  url: 'story.txt', // тарас бульба
+  url: 'lovecraft.txt', // тарас бульба
   dataType: 'text',
   success: draw, // <- Вот эта функция вызывается, если все ок.
   error: alert
 });
+
+/* Генератор геттера по названию ключа */
+function prop(x) {
+  return function (d) {
+    return d[x];
+  };
+}
 
 /*
  * Функция, которая отрисовывает гистограмму
