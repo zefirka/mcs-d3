@@ -78,7 +78,6 @@ function nextLesson(day) {
 }
 
 function HTML(html, day, lesson, postFix) {
-  console.log(postFix);
   //jscs:disable maximumLineLength
   var css = content(link, [
     '/static/css/main.css',

@@ -37,8 +37,8 @@
     "MDMA" : {
         "Mental disorders" : 52,
         "Physical disorders" : 39,
-        "Addiction level" : [34, 67],
-        "Availibility level" : [33, 55]
+        "Addiction level" : 41,
+        "Availibility level" : 48
     },
 
     "Methamphetaine" : {

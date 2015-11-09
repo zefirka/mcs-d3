@@ -4,6 +4,11 @@
 	stroke: black;
 }
 
+.axis text{
+	font-size: 12px;
+	font-family: Arial;
+}
+
 .line{
 	fill: none;
 	stroke: blue;
@@ -18,14 +23,28 @@
 	opacity: 0.2;
 }
 
+.bubble.fixed .item{
+	opacity: 1 !important;
+	fill-opacity: 1 !important;
+}
+
+.bubble text{
+	font-family: Arial;
+	font-size: 14px;
+}
+
 .item{
-	stroke-width: 2px;
-	stroke: black;
+	fill-opacity: 0.8;
 }
 
 .item:hover{
-	fill-opacity: 0.6;
+	fill-opacity: 1;
+	stroke: black;
+	stroke-width: 1px;
+	stroke-opacity: 0.7;
 }
+
+
 .LSD{
 	fill: green;
 	stroke: green;

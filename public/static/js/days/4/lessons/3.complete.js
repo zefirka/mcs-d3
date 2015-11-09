@@ -1,19 +1,16 @@
 var CONSTANTS = {
   WIDTH: 860,
-  HEIGHT: 600,
+  HEIGHT: 640,
   MARGIN: {
     TOP: 20,
-    LEFT: 40,
-    BOTTOM: 40,
+    LEFT: 50,
+    BOTTOM: 120,
     RIGHT: 20
   },
   TICKS: 10,
   MIN: 0,
   MAX: 100
 };
-
-CONSTANTS.MAX_RADIUS = (CONSTANTS.WIDTH / CONSTANTS.HEIGHT) * 100 >> 0;
-CONSTANTS.MIN_RADIUS = CONSTANTS.MAX_RADIUS - 87;
 
 var SCALES = {
   color: 'Addiction level',
@@ -60,12 +57,16 @@ function draw(data, opts) {
 
   /* Вычисляется по значению поля доступность */
   var radiusScale = d3.scale.linear()
-    .range([opts.MAX_RADIUS, opts.MIN_RADIUS])
-    .domain([0, 100]);
+    .range([15, 100])
+    .domain([d3.min(data, prop(opts.radius)), d3.max(data, prop(opts.radius))]);
+
+  var maxColor = d3.max(data, prop(opts.color));
+  var minColor = d3.min(data, prop(opts.color));
+  var pivot = (maxColor + minColor / 2);
 
   var colorScale = d3.scale.linear()
-    .domain([0, 100])
-    .range(['green', 'red']);
+    .range(['lightgreen', 'red'])
+    .domain([minColor,   maxColor]);
 
   var xAxis = d3.svg.axis()
     .scale(x)
@@ -94,37 +95,88 @@ function draw(data, opts) {
   yAxisElem.append('text')
     .attr('transform', 'rotate(-90)')
     .attr('y', 10)
-    .attr('dy', '.56em')
+    .attr('dy', -45)
     .style('text-anchor', 'end')
-    .text(opts.mental);
+    .text(opts.vertical);
 
   xAxisElem.append('text')
     .attr('x', 10)
-    .attr('dx', '.56em')
-    .attr('text-anchor', 'end')
-    .text(opts.phys);
+    .attr('dx', opts.WIDTH - 120)
+    .attr('dy', 35)
+    .attr('text-anchor', 'start')
+    .text(opts.horizontal);
 
   var bubble = svg
     .selectAll('.bubble')
       .data(data).enter()
     .append('g')
-    .attr('class', 'bubble');
-  // .attr("transform", function(d) {
-  //   debugger;
-  //   return "translate(" + d.cx + "," + d.cy + ")";
-  // });
+    .attr('class', 'bubble')
+    .attr('transform', function (d) {
+      return 'translate(' + compose(prop(opts.horizontal), x)(d) + ',' + compose(prop(opts.vertical), y)(d) + ')';
+    });
 
-  bubble.append('circle')
-    .attr('r', compose(prop(opts.radius), radiusScale))
-    .attr('cx', compose(prop(opts.horizontal), x))
-    .attr('cy', compose(prop(opts.vertical), y))
-    .attr('fill', compose(prop(opts.color), colorScale))
+  var circle = bubble.append('circle')
     .attr('class', 'item');
 
+  circle
+    .attr('r', 2)
+    .transition()
+    .duration(300)
+    .attr('r', compose(prop(opts.radius), radiusScale))
+    .attr('fill', 'green')
+    .transition()
+    .duration(350)
+    .attr('fill', compose(prop(opts.color), colorScale));
+
   bubble.append('text')
-    .attr('x', compose(prop(opts.horizontal), x))
-    .attr('y', compose(prop(opts.vertical), y))
+    .style('text-anchor', 'middle')
     .text(prop('name'));
 
-}
+  bubble.on('mouseenter', function (d, e) {
+    d3.selectAll('.bubble').style('opacity', '0.3');
+    d3.select(this).style('opacity', '1');
+  }).on('mouseleave', function (d, e) {
+    d3.selectAll('.bubble').style('opacity', '1');
+  }).on('click', function (d, e) {
 
+    if (!this._opened){
+      this._opened = 'no';
+    }
+
+    var opened = this._opened == 'yes';
+
+    if (!opened){
+      d3.selectAll('.bubble')
+        .style('display', 'none');
+
+      d3.select(this)
+        .style('display', 'inherit')
+        .attr('class', 'bubble fixed')
+        .transition()
+        .duration(500)
+        .attr('transform', 'translate(' + opts.WIDTH / 2 + ', ' + opts.HEIGHT / 2 + ')')
+        .select('.item')
+        .attr('r', 310);
+
+      this._opened = 'yes';
+      return;
+    }
+
+    if (opened){
+
+      d3.selectAll('.bubble').style('display', 'inherit');
+
+      d3.select(this).attr('class', 'bubble')
+        .transition()
+        .duration(350)
+        .attr('transform',
+          'translate(' + compose(prop(opts.horizontal), x)(d) + ',' + compose(prop(opts.vertical), y)(d) + ')')
+        .select('.item')
+        .attr('r', compose(prop(opts.radius), radiusScale)(d));
+
+      d3.select(this).select('.about').remove();
+
+    }
+  });
+
+}
