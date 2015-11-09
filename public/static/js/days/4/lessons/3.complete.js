@@ -104,46 +104,27 @@ function draw(data, opts) {
     .attr('text-anchor', 'end')
     .text(opts.phys);
 
-  svg
-    .selectAll('circle')
+  var bubble = svg
+    .selectAll('.bubble')
       .data(data).enter()
-    .append('circle')
+    .append('g')
+    .attr('class', 'bubble');
+  // .attr("transform", function(d) {
+  //   debugger;
+  //   return "translate(" + d.cx + "," + d.cy + ")";
+  // });
+
+  bubble.append('circle')
     .attr('r', compose(prop(opts.radius), radiusScale))
     .attr('cx', compose(prop(opts.horizontal), x))
     .attr('cy', compose(prop(opts.vertical), y))
     .attr('fill', compose(prop(opts.color), colorScale))
     .attr('class', 'item');
-}
 
-function compose(f, g) {
-  return function () {
-    return g(f.apply(null, arguments));
-  };
-}
+  bubble.append('text')
+    .attr('x', compose(prop(opts.horizontal), x))
+    .attr('y', compose(prop(opts.vertical), y))
+    .text(prop('name'));
 
-function sortBy(r) {
-  return function (a, b) {
-    return b[r] - a[r];
-  };
-}
-
-function prop(x) {
-  return function (y) {
-    return y[x];
-  };
-}
-
-function sq(x) {
-  return x * x;
-}
-
-function sqrt(x) {
-  return Math.sqrt(x);
-}
-
-function merge() {
-  return [].slice.call(arguments).reduce(function (sum, object) {
-    return Object.assign(sum, object);
-  });
 }
 
