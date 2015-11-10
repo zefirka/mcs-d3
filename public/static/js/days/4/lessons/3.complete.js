@@ -1,3 +1,6 @@
+/********************************************************/
+/* Константы и настройки */
+
 var CONSTANTS = {
   WIDTH: 860,
   HEIGHT: 640,
@@ -9,7 +12,8 @@ var CONSTANTS = {
   },
   TICKS: 10,
   MIN: 0,
-  MAX: 100
+  MAX: 100,
+  RADIUS_RANGE: [10, 60]
 };
 
 var SCALES = {
@@ -20,9 +24,6 @@ var SCALES = {
 };
 
 d3.json('/static/js/data/data.4.3.json', function (error, json) {
-  if (error){
-    throw error;
-  }
 
   json = Object.keys(json).map(function (key) {
     return merge({
@@ -55,9 +56,9 @@ function draw(data, opts) {
     .range([opts.HEIGHT, 0])
     .domain([0, 100]);
 
-  /* Вычисляется по значению поля доступность */
+  /* Шкала радиуса */
   var radiusScale = d3.scale.linear()
-    .range([15, 100])
+    .range(opts.RADIUS_RANGE)
     .domain([d3.min(data, prop(opts.radius)), d3.max(data, prop(opts.radius))]);
 
   var maxColor = d3.max(data, prop(opts.color));
@@ -65,8 +66,8 @@ function draw(data, opts) {
   var pivot = (maxColor + minColor / 2);
 
   var colorScale = d3.scale.linear()
-    .range(['lightgreen', 'red'])
-    .domain([minColor,   maxColor]);
+    .range(['#00FF00', '#FF0000'])
+    .domain([minColor, maxColor]);
 
   var xAxis = d3.svg.axis()
     .scale(x)
@@ -131,52 +132,105 @@ function draw(data, opts) {
   bubble.append('text')
     .style('text-anchor', 'middle')
     .text(prop('name'));
+  bubble
+    .on('mouseover', onMouseOver)
+    .on('mouseout', onMouseOut)
+    .on('click', function (d) {
+      if (!this._opened){
+        this._opened = 'no';
+      }
 
-  bubble.on('mouseenter', function (d, e) {
-    d3.selectAll('.bubble').style('opacity', '0.3');
-    d3.select(this).style('opacity', '1');
-  }).on('mouseleave', function (d, e) {
-    d3.selectAll('.bubble').style('opacity', '1');
-  }).on('click', function (d, e) {
+      var opened = this._opened == 'yes';
 
-    if (!this._opened){
-      this._opened = 'no';
-    }
+      if (!opened){
+        d3.selectAll('.bubble')
+          .style('display', 'none');
 
-    var opened = this._opened == 'yes';
+        d3.select(this)
+          .style('display', 'inherit')
+          .attr('class', 'bubble fixed')
+          .transition()
+          .duration(500)
+          .attr('transform', 'translate(' + opts.WIDTH / 2 + ', ' + opts.HEIGHT / 2 + ')')
+          .select('.item')
+          .attr('r', 310);
 
-    if (!opened){
-      d3.selectAll('.bubble')
-        .style('display', 'none');
+        drawPopup(d3.select(this), d);
 
-      d3.select(this)
-        .style('display', 'inherit')
-        .attr('class', 'bubble fixed')
-        .transition()
-        .duration(500)
-        .attr('transform', 'translate(' + opts.WIDTH / 2 + ', ' + opts.HEIGHT / 2 + ')')
-        .select('.item')
-        .attr('r', 310);
+        this._opened = 'yes';
+        return;
+      }
 
-      this._opened = 'yes';
+      if (opened){
+
+        d3.selectAll('.bubble').style('display', 'inherit');
+        $('.popup').fadeOut(300, function () {
+        $(this).remove();
+      });
+
+        d3.select(this).attr('class', 'bubble')
+          .transition()
+          .duration(350)
+          .attr('transform',
+            'translate(' + compose(prop(opts.horizontal), x)(d) + ',' + compose(prop(opts.vertical), y)(d) + ')')
+          .select('.item')
+          .attr('r', compose(prop(opts.radius), radiusScale)(d));
+
+        d3.select(this).select('.about').remove();
+
+        hidePopup(d3.select(this));
+
+        this._opened = 'no';
+      }
+    });
+
+}
+
+function onMouseOver() {
+  d3.select(this)
+    .attr('class', 'bubble mouseover')
+    .style('opacity', '1');
+
+  d3.selectAll('.bubble:not(.mouseover)')
+    .transition()
+    .duration(150)
+    .style('opacity', '0.3');
+}
+
+function onMouseOut() {
+  d3.select(this)
+    .attr('class', 'bubble');
+
+  d3.selectAll('.bubble')
+    .transition()
+    .duration(150)
+    .style('opacity', '1');
+}
+
+function drawPopup(bubble, data) {
+
+  var g = bubble
+    .append('g')
+    .style('opacity', 0)
+    .attr('transform', 'translate(0, 10)');
+
+  Object.keys(data).forEach(function (key, i) {
+    var value = data[key];
+    if (key == 'name'){
       return;
     }
 
-    if (opened){
-
-      d3.selectAll('.bubble').style('display', 'inherit');
-
-      d3.select(this).attr('class', 'bubble')
-        .transition()
-        .duration(350)
-        .attr('transform',
-          'translate(' + compose(prop(opts.horizontal), x)(d) + ',' + compose(prop(opts.vertical), y)(d) + ')')
-        .select('.item')
-        .attr('r', compose(prop(opts.radius), radiusScale)(d));
-
-      d3.select(this).select('.about').remove();
-
-    }
+    g
+    .append('text')
+    .attr('class', 'about')
+    .style('text-anchor', 'middle')
+    .attr('dy', 20 * i)
+    .text(key + ': ' + value);
   });
 
+  g.transition().duration(400).style('opacity', 1);
+}
+
+function hidePopup(bubble) {
+  bubble.select('g').transition().duration(200).style('opacity', 0).remove();
 }

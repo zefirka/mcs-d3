@@ -84,3 +84,7 @@
 	fill: rgb(103, 185, 208);
 	stroke: rgb(103, 185, 208);
 }
+
+.popup{
+	position: absolute;
+}

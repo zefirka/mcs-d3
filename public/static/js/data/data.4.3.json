@@ -3,65 +3,74 @@
         "Mental disorders" : 68,
         "Physical disorders" : 17,
         "Addiction level" : 14,
-        "Availibility level" : 20
+        "Availibility level" : 25
     },
-
     "Heroin" : {
         "Mental disorders" : 21,
         "Physical disorders" : 79,
         "Addiction level" : 91,
         "Availibility level" : 44
     },
-
+    "Codeine" : {
+        "Mental disorders" : 12,
+        "Physical disorders" : 64,
+        "Addiction level" : 72,
+        "Availibility level" : 88
+    },
+    "Dissociatives" : {
+        "Mental disorders" : 46,
+        "Physical disorders" : 48,
+        "Addiction level" : 22,
+        "Availibility level" : 82
+    },
     "Marijuana" : {
         "Mental disorders" : 21,
         "Physical disorders" : 14,
         "Addiction level" : 39,
         "Availibility level" : 78
     },
-
     "Barbiturates" : {
         "Mental disorders" : 38,
         "Physical disorders" : 55,
         "Addiction level" : 69,
         "Availibility level" : 81
     },
-
+    "Tranquilizers" : {
+        "Mental disorders" : 29,
+        "Physical disorders" : 36,
+        "Addiction level" : 58,
+        "Availibility level" : 89
+    },
     "Amphetamine" : {
         "Mental disorders" : 68,
         "Physical disorders" : 66,
         "Addiction level" : 57,
         "Availibility level" : 40
     },
-
     "MDMA" : {
         "Mental disorders" : 52,
         "Physical disorders" : 39,
         "Addiction level" : 41,
         "Availibility level" : 48
     },
-
     "Methamphetaine" : {
         "Mental disorders" : 78,
         "Physical disorders" : 67,
         "Addiction level" : 72,
         "Availibility level" : 48
     },
-
     "Cocaine" : {
         "Mental disorders" : 39,
         "Physical disorders" : 60,
         "Addiction level" : 82,
         "Availibility level" : 52
     },
-
     "Alcohol" : {
         "Mental disorders" : 44,
         "Physical disorders" : 69,
         "Addiction level" : 79,
         "Availibility level" : 98
     },
-
     "Nicotine" : {
         "Mental disorders" : 2,
         "Physical disorders" : 58,
