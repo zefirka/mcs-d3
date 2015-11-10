@@ -1,0 +1,24 @@
+.axis path,
+.axis line{
+	fill: none;
+	stroke: black;
+}
+
+.axis text{
+	font-size: 12px;
+	font-family: Arial;
+}
+
+.line{
+	fill: none;
+	stroke: blue;
+	stroke-width: 3px;
+}
+
+.tick text{
+	font-size: 12px;
+}
+
+.tick line{
+	opacity: 0.2;
+}

@@ -1,39 +1,29 @@
-/********************************************************/
-/* Константы и настройки */
+var svg = d3.select('svg');
 
-var CONSTANTS = {
-  WIDTH: 860,
-  HEIGHT: 640,
-  MARGIN: {
-    TOP: 20,
-    LEFT: 50,
-    BOTTOM: 120,
-    RIGHT: 20
-  },
-  TICKS: 10,
-  MIN: 0,
-  MAX: 100,
-  RADIUS_RANGE: [10, 60]
-};
+svg
+  .attr('width', 500)
+  .attr('height', 500);
 
-var SCALES = {
-  color: 'Addiction level',
-  horizontal: 'Physical disorders',
-  vertical: 'Mental disorders',
-  radius: 'Availibility level'
-};
+/* Width transition */
+svg
+  .append('rect')
+  .attr('x', 5)
+  .attr('y', 5)
+  .attr('width', 0)
+  .attr('height', 40)
+  .attr('fill', 'red')
+  .transition()
+  .duration(1000)
+  .attr('width', 300);
 
-d3.json('/static/js/data/data.4.3.json', function (error, json) {
-
-  json = Object.keys(json).map(function (key) {
-    return merge({
-      name: key
-    }, json[key]);
-  });
-
-  draw(json, merge(CONSTANTS, SCALES));
-});
-
-function draw() {
-
-}
+/* Fill transition */
+svg
+  .append('rect')
+  .attr('x', 5)
+  .attr('y', 50)
+  .attr('width', 300)
+  .attr('height', 40)
+  .attr('fill', 'white')
+  .transition()
+  .duration(800)
+  .attr('fill', 'red');

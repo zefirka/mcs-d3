@@ -1,5 +1,5 @@
-var width = 960,
-  height = 500;
+var width = 960;
+var height = 500;
 
 // Setting color domains(intervals of values) for our map
 
@@ -31,9 +31,9 @@ var path = d3.geo.path().projection(projection);
 //Reading map file and data
 
 queue()
-.defer(d3.json, '/static/js/data/geo-russia.json')
-.defer(d3.csv, '/static/js/days/4/lessons/acs.csv')
-.await(ready);
+  .defer(d3.json, '/static/js/data/geo-russia.json')
+  .defer(d3.csv, '/static/js/days/4/lessons/acs.csv')
+  .await(ready);
 
 //Start of Choropleth drawing
 
