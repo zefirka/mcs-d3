@@ -1,19 +1,20 @@
+/********************************************************/
+/* Константы и настройки */
+
 var CONSTANTS = {
   WIDTH: 860,
-  HEIGHT: 600,
+  HEIGHT: 640,
   MARGIN: {
     TOP: 20,
-    LEFT: 40,
-    BOTTOM: 40,
+    LEFT: 50,
+    BOTTOM: 120,
     RIGHT: 20
   },
   TICKS: 10,
   MIN: 0,
-  MAX: 100
+  MAX: 100,
+  RADIUS_RANGE: [10, 60]
 };
-
-CONSTANTS.MAX_RADIUS = (CONSTANTS.WIDTH / CONSTANTS.HEIGHT) * 100 >> 0;
-CONSTANTS.MIN_RADIUS = CONSTANTS.MAX_RADIUS - 87;
 
 var SCALES = {
   color: 'Addiction level',
@@ -22,10 +23,17 @@ var SCALES = {
   radius: 'Availibility level'
 };
 
-var URL = '/static/js/data/data.4.3.json';
+d3.json('/static/js/data/data.4.3.json', function (error, json) {
 
-/* Функция русуящая график */
-function draw(data, opts) {
-  /* ... */
+  json = Object.keys(json).map(function (key) {
+    return merge({
+      name: key
+    }, json[key]);
+  });
+
+  draw(json, merge(CONSTANTS, SCALES));
+});
+
+function draw() {
+
 }
-
