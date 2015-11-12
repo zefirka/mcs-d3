@@ -1,121 +1,112 @@
-var width = 960;
-var height = 500;
+var Moscow = (function () {
+  var CONSTATNS = {
+    width: 960,
+    height: 860,
+    center: [37.656031, 55.855639],
+    scale: 52000,
+    regions: ['ВАО', 'ЮВАО', 'ЮАО', 'ЮЗАО', 'ЗАО', 'СЗАО', 'САО', 'СВАО', 'ЦАО']
+  };
 
-// Setting color domains(intervals of values) for our map
+  var settings = $.extend({
+    geoJSON: '/static/js/data/moscow.areas.json',
+    dataUrl: '/static/js/data/moscow_wifi.csv'
+  }, CONSTATNS);
 
-var color_domain = [50, 150, 350, 750, 1500];
-var ext_color_domain = [0, 50, 150, 350, 750, 1500];
-var legend_labels = ['< 50', '50+', '150+', '350+', '750+', '> 1500'];
-var color = d3.scale.threshold()
-.domain(color_domain)
-.range(['#adfcad', '#ffcb40', '#ffba00', '#ff7d73', '#ff4e40', '#ff1300']);
+  var chart;
+  var projection;
+  var path;
+  var cache;
 
-var div = d3.select('body').append('div')
-.attr('class', 'tooltip')
-.style('opacity', 0);
+  function draw(map, data) {
+    map.features = map.features.filter(function (feature) {
+      return ~settings.regions.indexOf(feature.properties.ABBREV_AO);
+    });
+    cache = map;
 
-var svg = d3.select('body').append('svg')
-.attr('width', width)
-.attr('height', height)
-.style('margin', '10px auto');
+    var districts = data.reduce(function (sum, item) {
+      var d = item.District;
+      if (!~sum.indexOf(d)){
+        sum.push(d);
+      }
+      return sum;
+    }, []);
 
-var projection = d3.geo.albers()
-.rotate([-105, 0])
-.center([-10, 65])
-.parallels([52, 64])
-.scale(700)
-.translate([width / 2, height / 2]);
+    var rates = {};
+    data.forEach(function (row) {
+      rates[row.District] = rates[row.District] || 0;
+      rates[row.District] += 1;
+    });
 
-var path = d3.geo.path().projection(projection);
+    var arrayOfRates = o2k(rates, 'count');
 
-//Reading map file and data
+    var maxRate = d3.max(arrayOfRates, prop('value'));
+    var minRate = d3.min(arrayOfRates, prop('value'));
+    var colorScale = d3.scale.linear()
+      .range(['#7F90A3', '#004FAA'])
+      .domain([minRate, maxRate]);
 
-queue()
-  .defer(d3.json, '/static/js/data/geo-russia.json')
-  .defer(d3.csv, '/static/js/days/4/lessons/acs.csv')
-  .await(ready);
+    svg.selectAll('.district')
+      .data(map.features)
+      .enter()
+    .append('path')
+      .attr('d', path)
+      .attr('fill', function (d) {
+        var name = d.properties.NAME;
+        return colorScale(rates[name] || minRate);
+      })
+      .attr('stroke', 'black');
+  }
 
-//Start of Choropleth drawing
+  var api = {
+    svg: d3.select('.chart'),
+    geo: false,
 
-function ready(error, map, data) {
-  var rateById = {};
-  var nameById = {};
+    init: function () {
+      svg = this.svg;
+      this.svg
+        .attr('width', settings.width)
+        .attr('height', settings.height);
 
-  data.forEach(function (d) {
-    rateById[d.RegionCode] = +d.Deaths;
-    nameById[d.RegionCode] = d.RegionName;
-  });
+      projection = d3.geo.mercator()
+       .center(settings.center)
+       .scale(settings.scale);
 
-  //Drawing Choropleth
-  svg.append('g')
-  .attr('class', 'region')
-  .selectAll('path')
-  .data(topojson.object(map, map.objects.russia).geometries)
-  //.data(topojson.feature(map, map.objects.russia).features) <-- in case topojson.v1.js
-  .enter().append('path')
-  .attr('d', path)
-  .style('fill', function (d) {
-    return color(rateById[d.properties.region]);
-  })
-  .style('opacity', 0.8)
+      path = d3.geo.path()
+        .projection(projection);
 
-  //Adding mouseevents
-  .on('mouseover', function (d) {
-    d3.select(this).transition().duration(300).style('opacity', 1);
-    div.transition().duration(300)
-    .style('opacity', 1);
-    div.text(nameById[d.properties.region] + ' : ' + rateById[d.properties.region])
-    .style('left', (d3.event.pageX) + 'px')
-    .style('top', (d3.event.pageY - 30) + 'px');
-  })
-  .on('mouseout', function () {
-    d3.select(this)
-    .transition().duration(300)
-    .style('opacity', 0.8);
-    div.transition().duration(300)
-    .style('opacity', 0);
-  });
+      return this;
+    },
 
-  // Adding cities on the map
+    fetch: function (geo, origins) {
+      queue()
+        .defer(d3.json, geo || settings.geoJSON)
+        .defer(d3.csv, origins || settings.dataUrl)
+        .await(function (error, map, data) {
+          if (error){
+            throw new Error(error);
+          }
 
-  d3.tsv('/static/js/days/4/lessons/cities.tsv', function (error, data) {
-    var city = svg.selectAll('g.city')
-    .data(data)
-    .enter()
-    .append('g')
-    .attr('class', 'city')
-    .attr('transform', function (d) { return 'translate(' + projection([d.lon, d.lat]) + ')'; });
+          draw(map, data);
+        });
 
-    city.append('circle')
-    .attr('r', 3)
-    .style('fill', 'lime')
-    .style('opacity', 0.75);
+      return this;
+    },
 
-    city.append('text')
-    .attr('x', 5)
-    .text(function (d) { return d.City; });
-  });
+    config: function (config) {
+      settings = $.extend(settings, config);
+      return this;
+    },
 
-}
+    showError: function (message) {
+      message = message || 'Something went wrong';
+      alert(message);
+    }
+  };
 
-//Adding legend for our Choropleth
+  return api;
+})();
 
-var legend = svg.selectAll('g.legend')
-.data(ext_color_domain)
-.enter().append('g')
-.attr('class', 'legend');
+Moscow
+  .init()
+  .fetch();
 
-var ls_w = 20, ls_h = 20;
-
-legend.append('rect')
-.attr('x', 20)
-.attr('y', function (d, i) { return height - (i * ls_h) - 2 * ls_h;})
-.attr('width', ls_w)
-.attr('height', ls_h)
-.style('fill', function (d, i) { return color(d); })
-.style('opacity', 0.8);
-
-legend.append('text')
-.attr('x', 50)
-.attr('y', function (d, i) { return height - (i * ls_h) - ls_h - 4;})
-.text(function (d, i) { return legend_labels[i]; });

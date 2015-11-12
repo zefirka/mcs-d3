@@ -26,12 +26,12 @@ var SCALES = {
 d3.json('/static/js/data/data.4.3.json', function (error, json) {
 
   json = Object.keys(json).map(function (key) {
-    return merge({
+    return $.extend({
       name: key
     }, json[key]);
   });
 
-  draw(json, merge(CONSTANTS, SCALES));
+  draw(json, $.extend(CONSTANTS, SCALES));
 });
 
 function draw() {

@@ -42,6 +42,10 @@ function interpolate(str) {
 }
 
 function result(o, str) {
+  if (!str){
+    return o;
+  }
+
   return str.split('.').reduce(function (sum, prop) {
     if (~prop.indexOf('[')){
       var nth = Number(prop.match(/\[(.+?)\]/).pop());
@@ -52,4 +56,50 @@ function result(o, str) {
     }
     return sum;
   }, o);
+}
+function compose(f, g) {
+  return function () {
+    return g(f.apply(null, arguments));
+  };
+}
+
+function chain() {
+  return toArray(arguments).reduce(function (composed, fn) {
+    return compose(fn, composed);
+  });
+}
+
+function sortBy(r) {
+  return function (a, b) {
+    return b[r] - a[r];
+  };
+}
+
+function prop(x) {
+  return function (y) {
+    return result(y, x);
+  };
+}
+
+function sq(x) {
+  return x * x;
+}
+
+function sqrt(x) {
+  return Math.sqrt(x);
+}
+
+function extend() {
+  return [].slice.call(arguments).reduce(function (sum, object) {
+    return Object.assign(sum, object);
+  });
+}
+
+function o2k(o, keyName) {
+  return Object.keys(o).map(function (key) {
+    var res = {};
+    res[keyName || 'key'] = key;
+    res.value = o[key];
+    return res;
+  });
 }
