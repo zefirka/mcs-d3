@@ -1,3 +1,4 @@
+// Выборки в D3
 var firstList = d3.select('ul');
 var secondList = d3.select(d3.selectAll('ul')[0].pop());
 

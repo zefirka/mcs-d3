@@ -9,8 +9,11 @@ var Moscow = (function () {
 
   var settings = $.extend({
     geoJSON: '/static/js/data/moscow.areas.json',
-    dataUrl: '/static/js/data/moscow_wifi.csv'
+    dataUrl: '/static/js/data/moscow_wifi.csv',
+    static: '/static/js/data/',
   }, CONSTATNS);
+
+  var LAYERS = {};
 
   var chart;
   var projection;
@@ -54,7 +57,11 @@ var Moscow = (function () {
         var name = d.properties.NAME;
         return colorScale(rates[name] || minRate);
       })
-      .attr('stroke', 'black');
+      .attr('stroke', 'black')
+      .on('mouseover', function () {
+        var d = d3.select(this);
+        d.attr('fill', d.rd.attr('fill'));
+      });
   }
 
   var api = {
@@ -67,7 +74,7 @@ var Moscow = (function () {
         .attr('width', settings.width)
         .attr('height', settings.height);
 
-      projection = d3.geo.mercator()
+      projection = settings.projection = d3.geo.mercator()
        .center(settings.center)
        .scale(settings.scale);
 
@@ -92,6 +99,16 @@ var Moscow = (function () {
       return this;
     },
 
+    layer: function (file, method, callback) {
+      d3[method](settings.static + file + '.' + method, function (error, data) {
+        if (error){
+          throw error;
+        }
+
+        callback.call(LAYERS, data, svg, settings);
+      });
+    },
+
     config: function (config) {
       settings = $.extend(settings, config);
       return this;
@@ -108,5 +125,27 @@ var Moscow = (function () {
 
 Moscow
   .init()
-  .fetch();
+  .fetch()
+  .layer('libs', 'json', function (libs, svg, settings) {
+
+    var library = svg.selectAll('g.library')
+      .data(libs).enter()
+      .append('g')
+      .attr('class', 'library')
+      .attr('transform', function (d) {
+        return 'translate(' + settings.projection([d.Lon, d.Lat]) + ')';
+      });
+
+    library.append('circle')
+      .attr('r', 3)
+      .style('fill', 'lime')
+      .style('opacity', 0.75);
+
+    // library.append('text')
+    //   .attr('x', 5)
+    //   .attr('font-size', 6)
+    //   .text(prop('Cells.CommonName'))
+
+    this.libs = library;
+  });
 
