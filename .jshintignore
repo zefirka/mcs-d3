@@ -5,3 +5,4 @@
 ./public/static/js/data/*
 ./node/lessons.json
 public/static/libs/**/*
+./public/static/js/quiz.js

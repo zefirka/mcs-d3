@@ -33,7 +33,7 @@ function interpolate(str) {
 
   return str.replace(reg, function (i) {
     var res = result(data, i.slice(2, -2)),
-        arg = isExist(res) ? res : i;
+        arg = isExist(res) ? res : '';
     if (isTrueObject(arg)){
       arg = JSON.stringify(arg);
     }
@@ -52,7 +52,7 @@ function result(o, str) {
       var nprop = prop.match(/(.+?)\[*/).pop();
       sum = sum[nprop][nth];
     }else {
-      sum = sum[prop];
+      sum = sum ? sum[prop] : sum;
     }
     return sum;
   }, o);

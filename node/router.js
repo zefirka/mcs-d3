@@ -91,5 +91,10 @@ module.exports = function (app) {
     res.sendFile(url);
   });
 
+  app.get('/quiz', function (req, res, next) {
+    var file = join(config.views, 'quiz.html');
+    res.sendFile(file);
+  });
+
   return app;
 };

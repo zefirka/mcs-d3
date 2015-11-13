@@ -1,0 +1,33 @@
+  .b-card{
+	width: 728px;
+	margin: 15px auto;
+	background: #BAE0D9;
+	padding: 15px 20px;
+	box-shadow: 3px 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .b-card__select{
+  	cursor: pointer;
+  }
+
+  pre{
+  	background: #eee;
+  	padding: 5px 10px;
+  }
+
+  pre code{
+  	padding: 0;
+  	color: #333;
+  	background: transparent;
+  }
+
+  code{
+  	padding: 2px 4px;
+  	background: #f7f7f7;
+  	color: #a71d5d;
+  	border-radius: 4px;
+  }
+
+.functions{
+  background: #BAC0E0;
+}
